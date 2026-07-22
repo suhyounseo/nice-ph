@@ -7,12 +7,13 @@
   "use strict";
 
   const STORAGE_KEY = "nice-ph-v1-business";
+  const MANUAL_STORAGE_KEY = "nice-ph-v1-manual-draft";
   const SCHEMA_VERSION = 3;
 
   const makeId = (prefix) => `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
   const createProduct = (values = {}) => ({ id: values.id || makeId("product"), name: values.name || "", description: values.description || "", price: values.price || "", image: values.image || "" });
   const createStrength = (text = "", id = "") => ({ id: id || makeId("strength"), text });
-  const createAction = (values = {}) => ({ id: values.id || makeId("action"), label: values.label || "", url: values.url || "", icon: values.icon || "" });
+  const createAction = (values = {}) => ({ id: values.id || makeId("action"), label: values.label || "", url: values.url || "", icon: values.icon || "", channel: values.channel || "" });
 
   function createBlankState() {
     return {
@@ -63,13 +64,20 @@
       catch { return createBlankState(); }
     },
     save(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...state, version: SCHEMA_VERSION })); },
-    clear() { localStorage.removeItem(STORAGE_KEY); }
+    saveSnapshot(state) { localStorage.setItem(MANUAL_STORAGE_KEY, JSON.stringify({ ...state, version: SCHEMA_VERSION })); },
+    loadSnapshot() {
+      try { const saved = localStorage.getItem(MANUAL_STORAGE_KEY); return saved ? migrate(JSON.parse(saved)) : null; }
+      catch { return null; }
+    },
+    clear() { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(MANUAL_STORAGE_KEY); }
   };
 
   let activeAdapter = LocalStorageAdapter;
   const Repository = {
     load: () => activeAdapter.load(),
     save: (state) => activeAdapter.save(state),
+    saveSnapshot: (state) => activeAdapter.saveSnapshot ? activeAdapter.saveSnapshot(state) : activeAdapter.save(state),
+    loadSnapshot: () => activeAdapter.loadSnapshot ? activeAdapter.loadSnapshot() : null,
     clear: () => activeAdapter.clear(),
     setAdapter(adapter) {
       if (!adapter?.load || !adapter?.save || !adapter?.clear) throw new Error("데이터 어댑터 규약이 올바르지 않습니다.");
@@ -90,6 +98,7 @@
   const productFields = document.querySelector("#productFields");
   const strengthFields = document.querySelector("#strengthFields");
   const actionFields = document.querySelector("#actionFields");
+  const channelOptions = document.querySelector("#channelOptions");
   const subImageList = document.querySelector("#subImageList");
   const toast = document.querySelector("#toast");
   const saveStatus = document.querySelector("#saveStatus");
@@ -132,6 +141,11 @@
     ["blog", "블로그"], ["youtube", "유튜브"], ["location", "위치"]
   ];
   const iconGlyphs = { link: "↗", phone: "☎", chat: "◌", calendar: "□", shop: "◇", instagram: "◎", blog: "B", youtube: "▶", location: "⌖" };
+  const channelPresets = {
+    instagram: { label: "인스타그램", icon: "instagram" }, smartstore: { label: "스마트스토어", icon: "shop" },
+    showroom: { label: "쇼룸", icon: "location" }, naverplace: { label: "네이버플레이스", icon: "location" },
+    blog: { label: "블로그", icon: "blog" }, kakao: { label: "카카오채널", icon: "chat" }, youtube: { label: "유튜브", icon: "youtube" }
+  };
 
   function sampleState() {
     return Data.migrate({
@@ -223,7 +237,34 @@
     heroPreview.style.backgroundImage = state.heroImage ? `url("${state.heroImage}")` : "";
   }
 
-  function renderEditors() { renderProductEditors(); renderStrengthEditors(); renderActionEditors(); renderSubImages(); }
+  function renderChannelOptions() {
+    channelOptions.querySelectorAll("[data-channel]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(state.actions.some((action) => action.channel === button.dataset.channel)));
+    });
+  }
+
+  function updateProgress() {
+    const criteria = [
+      [Boolean(state.industry), "업종을 선택해 주세요."], [Boolean(state.businessName.trim()), "상호명을 입력해 주세요."],
+      [Boolean(state.tagline.trim()), "한 줄 소개를 적어주세요."], [Boolean(state.description.trim()), "사업 소개를 적어주세요."],
+      [Boolean(state.heroImage || state.subImages.length), "대표 이미지를 등록해 주세요."],
+      [state.products.some((product) => product.name.trim()), "상품이나 서비스를 하나 추가해 주세요."],
+      [state.strengths.some((strength) => strength.text.trim()), "사업의 강점을 하나 적어주세요."],
+      [Boolean(state.address.trim()), "주소를 입력해 주세요."],
+      [Boolean(state.openTime && state.closeTime), "오픈과 마감 시간을 입력해 주세요."],
+      [Boolean(state.phone.trim()), "전화번호를 입력해 주세요."],
+      [state.actions.some((action) => action.label.trim() && safeActionUrl(action.url)), "고객 연결 버튼을 하나 완성해 주세요."]
+    ];
+    const completed = criteria.filter(([done]) => done).length;
+    const percent = Math.round((completed / criteria.length) * 100);
+    document.querySelector("#progressPercent").textContent = `${percent}% 완료`;
+    document.querySelector("#progressBar").style.width = `${percent}%`;
+    const progress = document.querySelector("#interviewProgress");
+    progress.setAttribute("aria-valuenow", String(percent));
+    document.querySelector("#progressHint").textContent = percent === 100 ? "소개 페이지가 완성됐어요!" : criteria.find(([done]) => !done)?.[1] || "조금만 더 입력해 주세요.";
+  }
+
+  function renderEditors() { renderProductEditors(); renderStrengthEditors(); renderActionEditors(); renderSubImages(); renderChannelOptions(); }
 
   function safeActionUrl(value) {
     const trimmed = value?.trim();
@@ -260,6 +301,7 @@
   }
 
   function renderPreview() {
+    updateProgress();
     const industry = state.industry || "업종을 선택해 주세요";
     setText("#previewIndustry", industry);
     setText("#previewName", state.businessName, "상호명을 입력해 주세요");
@@ -362,7 +404,34 @@
   document.querySelector("#addProduct").addEventListener("click", () => { state.products.push(Data.createProduct()); refresh({ editors: true }); productFields.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "center" }); });
   document.querySelector("#addStrength").addEventListener("click", () => { state.strengths.push(Data.createStrength()); refresh({ editors: true }); });
   document.querySelector("#addAction").addEventListener("click", () => { state.actions.push(Data.createAction()); refresh({ editors: true }); actionFields.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "center" }); });
+  channelOptions.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-channel]");
+    if (!button) return;
+    const channel = button.dataset.channel;
+    let index = state.actions.findIndex((action) => action.channel === channel);
+    if (index < 0) {
+      const preset = channelPresets[channel];
+      state.actions.push(Data.createAction({ ...preset, channel }));
+      index = state.actions.length - 1;
+      refresh({ editors: true });
+      showToast(`${preset.label} 버튼 입력란을 추가했어요. URL을 입력해 주세요.`);
+    } else {
+      showToast("이미 추가된 채널이에요. URL을 이어서 입력해 주세요.");
+    }
+    const urlInput = actionFields.querySelector(`[data-collection="actions"][data-index="${index}"][data-field="url"]`);
+    urlInput?.focus(); urlInput?.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
   document.querySelector("#aiInterview").addEventListener("click", () => showToast("AI 인터뷰는 준비 중이에요. 지금은 직접 입력을 이용해 주세요."));
+
+  document.querySelector("#saveDraft").addEventListener("click", () => {
+    try { Data.Repository.save(state); Data.Repository.saveSnapshot(state); saveStatus.textContent = "직접 저장됨"; showToast("현재 입력 내용을 안전하게 저장했어요."); }
+    catch { showToast("저장 공간이 부족해 저장하지 못했어요. 이미지 크기를 확인해 주세요."); }
+  });
+  document.querySelector("#loadDraft").addEventListener("click", () => {
+    const saved = Data.Repository.loadSnapshot();
+    if (!saved) { showToast("직접 저장한 내용이 아직 없어요."); return; }
+    state = saved; syncBaseInputs(); refresh({ editors: true }); showToast("저장한 입력 내용을 불러왔어요.");
+  });
 
   document.querySelector("#loadSample").addEventListener("click", () => { state = sampleState(); syncBaseInputs(); refresh({ editors: true }); showToast("NICE 예시 데이터를 불러왔어요."); });
   document.querySelector("#resetAll").addEventListener("click", () => {
@@ -408,11 +477,18 @@
       if (navigator.clipboard?.writeText && window.isSecureContext) await navigator.clipboard.writeText(shareUrl); else fallbackCopy(shareUrl);
       button.textContent = "복사 완료"; showToast("작성 데이터가 포함된 링크를 복사했어요.");
     } catch { button.textContent = "복사 실패"; showToast("링크를 만들거나 복사하지 못했어요. 이미지 용량을 확인해 주세요."); }
-    setTimeout(() => { button.textContent = "링크 복사"; }, 2200);
+    setTimeout(() => { button.textContent = "페이지 링크 복사"; }, 2200);
+  }
+
+  function returnToEditor() {
+    const editorUrl = new URL(window.location.href);
+    editorUrl.hash = "builder";
+    try { window.history.replaceState(null, "", editorUrl.href); applyViewMode({ moveFocus: true }); }
+    catch { window.location.hash = "builder"; }
   }
 
   document.querySelector("#viewCompletedPage").addEventListener("click", () => { window.location.hash === "#preview" ? applyViewMode({ moveFocus: true }) : window.location.hash = "preview"; });
-  document.querySelector("#backToEditor").addEventListener("click", () => { window.location.hash = "builder"; });
+  document.querySelector("#backToEditor").addEventListener("click", returnToEditor);
   document.querySelector("#sharePage").addEventListener("click", openSharePage);
   document.querySelector("#copyPageLink").addEventListener("click", copyPageLink);
   document.querySelector("#heroProducts").addEventListener("click", (event) => { if (!document.body.classList.contains("preview-mode")) return; event.preventDefault(); document.querySelector("#previewProducts").scrollIntoView({ behavior: "smooth" }); });

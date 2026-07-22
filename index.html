@@ -14,7 +14,7 @@
     </div>
     <div class="completion-actions">
       <button type="button" class="completion-button secondary" id="sharePage">공유 페이지 열기</button>
-      <button type="button" class="completion-button secondary" id="copyPageLink">링크 복사</button>
+      <button type="button" class="completion-button secondary" id="copyPageLink">페이지 링크 복사</button>
       <button type="button" class="completion-button" id="backToEditor">편집으로 돌아가기</button>
     </div>
   </div>
@@ -54,9 +54,16 @@
             <button type="button" class="active" aria-pressed="true">직접 입력</button>
             <button type="button" id="aiInterview" aria-disabled="true">AI 인터뷰 <small>준비중</small></button>
           </div>
+          <div class="interview-progress-card">
+            <div class="progress-summary"><span>소개 페이지 완성도</span><strong id="progressPercent">0% 완료</strong></div>
+            <div class="progress-track" id="interviewProgress" role="progressbar" aria-label="인터뷰 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="progressBar"></i></div>
+            <small id="progressHint">업종을 선택하면 시작할 수 있어요.</small>
+          </div>
         </div>
         <div class="utility-actions">
           <button type="button" class="view-page-button" id="viewCompletedPage">완성 페이지 보기 <span aria-hidden="true">→</span></button>
+          <button type="button" class="text-button" id="saveDraft">저장하기</button>
+          <button type="button" class="text-button" id="loadDraft">불러오기</button>
           <button type="button" class="text-button" id="loadSample">예시 데이터 불러오기</button>
           <button type="button" class="text-button danger" id="resetAll">전체 초기화</button>
         </div>
@@ -133,6 +140,19 @@
 
           <section class="form-section">
             <div class="section-title"><span>06</span><div><h3>고객 행동 버튼</h3><p>고객이 방문할 곳을 필요한 만큼 자유롭게 연결하세요.</p></div></div>
+            <div class="channel-interview">
+              <strong>고객은 어디에서 만날 수 있나요?</strong>
+              <p>사용 중인 채널을 선택하면 버튼 입력란이 자동으로 만들어져요.</p>
+              <div class="channel-options" id="channelOptions">
+                <button type="button" data-channel="instagram">인스타그램</button>
+                <button type="button" data-channel="smartstore">스마트스토어</button>
+                <button type="button" data-channel="showroom">쇼룸</button>
+                <button type="button" data-channel="naverplace">네이버플레이스</button>
+                <button type="button" data-channel="blog">블로그</button>
+                <button type="button" data-channel="kakao">카카오채널</button>
+                <button type="button" data-channel="youtube">유튜브</button>
+              </div>
+            </div>
             <div id="actionFields"></div>
             <button type="button" class="add-item-button" id="addAction"><span aria-hidden="true">＋</span> 버튼 추가</button>
           </section>
