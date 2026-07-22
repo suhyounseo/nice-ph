@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="사업 정보를 입력해 고객에게 보여줄 랜딩페이지를 만드는 NICE Promotion Hub">
+  <title>NICE PH | 내 사업을 이해하는 홍보 공간</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="completion-bar" id="completionBar" hidden>
+    <div class="completion-brand" aria-label="NICE PH 완성 페이지">
+      <span class="brand-mark">N</span><strong>NICE PH</strong>
+    </div>
+    <div class="completion-actions">
+      <button type="button" class="completion-button secondary" id="copyPageLink">페이지 링크 복사</button>
+      <button type="button" class="completion-button" id="backToEditor">편집으로 돌아가기</button>
+    </div>
+  </div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="NICE PH 처음으로">
+      <span class="brand-mark">N</span>
+      <span><strong>NICE PH</strong><small>NICE Promotion Hub</small></span>
+    </a>
+    <a class="header-link" href="#builder">페이지 만들기 <span aria-hidden="true">↗</span></a>
+  </header>
+
+  <main id="top">
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="intro-copy">
+        <p class="eyebrow">Small business, beautifully introduced.</p>
+        <h1 id="intro-title">내 사업을 이해하는<br><em>홍보 공간</em></h1>
+        <p class="intro-description">사업 정보를 입력하면 고객에게 보여줄 나만의 랜딩페이지가 만들어집니다. 어렵지 않게, 지금 바로 시작해 보세요.</p>
+        <a class="primary-button" href="#builder">내 사업 페이지 만들기 <span aria-hidden="true">→</span></a>
+        <p class="intro-note"><span aria-hidden="true">✓</span> 가입 없이 바로 시작 · 입력 내용은 이 기기에만 저장</p>
+      </div>
+      <div class="intro-visual" aria-hidden="true">
+        <div class="shape shape-one"></div><div class="shape shape-two"></div>
+        <div class="mini-page">
+          <div class="mini-photo"><span>NICE</span></div>
+          <div class="mini-lines"><i></i><i></i><i></i></div>
+          <div class="mini-cards"><i></i><i></i><i></i></div>
+        </div>
+        <div class="floating-badge">당신의 사업 이야기<br><strong>한 페이지에 담아요</strong></div>
+      </div>
+    </section>
+
+    <section class="builder" id="builder" aria-labelledby="builder-title">
+      <div class="builder-heading">
+        <div><p class="step-label">STEP 01 — 사업 정보 입력</p><h2 id="builder-title">내 사업을 알려주세요</h2><p>입력하는 즉시 오른쪽 미리보기에 반영됩니다.</p></div>
+        <div class="utility-actions">
+          <button type="button" class="view-page-button" id="viewCompletedPage">완성 페이지 보기 <span aria-hidden="true">→</span></button>
+          <button type="button" class="text-button" id="loadSample">예시 데이터 불러오기</button>
+          <button type="button" class="text-button danger" id="resetAll">전체 초기화</button>
+        </div>
+      </div>
+
+      <div class="workspace">
+        <form class="editor" id="businessForm" autocomplete="on">
+          <section class="form-section">
+            <div class="section-title"><span>01</span><div><h3>어떤 사업을 운영하시나요?</h3><p>업종을 선택하면 알맞은 소개 문구를 제안해 드려요.</p></div></div>
+            <fieldset class="industry-options">
+              <legend class="sr-only">업종 선택</legend>
+              <label><input type="radio" name="industry" value="여성의류"><span>여성의류</span></label>
+              <label><input type="radio" name="industry" value="카페"><span>카페</span></label>
+              <label><input type="radio" name="industry" value="음식점"><span>음식점</span></label>
+              <label><input type="radio" name="industry" value="미용실"><span>미용실</span></label>
+              <label><input type="radio" name="industry" value="네일숍"><span>네일숍</span></label>
+              <label><input type="radio" name="industry" value="헬스·필라테스"><span>헬스·필라테스</span></label>
+              <label><input type="radio" name="industry" value="꽃집"><span>꽃집</span></label>
+              <label><input type="radio" name="industry" value="기타"><span>기타</span></label>
+            </fieldset>
+          </section>
+
+          <section class="form-section">
+            <div class="section-title"><span>02</span><div><h3>사업의 첫인상을 적어주세요</h3><p>고객이 가장 먼저 보게 되는 정보예요.</p></div></div>
+            <div class="field-grid two-cols">
+              <label class="field"><span>상호명 <b>*</b></span><input name="businessName" type="text" placeholder="예: NICE" maxlength="40"></label>
+              <label class="field"><span>한 줄 소개</span><input name="tagline" type="text" placeholder="사업의 매력을 한 문장으로 표현해 보세요" maxlength="80"></label>
+            </div>
+            <label class="field"><span>사업 소개</span><textarea name="description" rows="5" placeholder="사업을 시작한 이야기, 전문 분야, 고객에게 전하고 싶은 내용을 적어주세요."></textarea></label>
+            <label class="upload-field">
+              <span class="upload-label">대표 이미지</span>
+              <span class="upload-box"><span class="upload-icon">＋</span><span><strong>이미지를 선택하세요</strong><small>JPG, PNG, WEBP · 권장 1600 × 1000px</small></span></span>
+              <input class="image-input" type="file" name="heroImageFile" accept="image/*" data-target="heroImage">
+            </label>
+            <input type="hidden" name="heroImage">
+            <div class="uploaded-preview" data-image-preview="heroImage" hidden></div>
+          </section>
+
+          <section class="form-section">
+            <div class="section-title"><span>03</span><div><h3>주요 상품 또는 서비스</h3><p>대표 항목을 최대 3개까지 소개할 수 있어요.</p></div></div>
+            <div id="productFields"></div>
+          </section>
+
+          <section class="form-section">
+            <div class="section-title"><span>04</span><div><h3>우리 사업의 강점</h3><p>고객이 선택해야 할 이유를 짧고 분명하게 적어주세요.</p></div></div>
+            <div class="strength-fields">
+              <label class="field numbered"><i>01</i><input name="strength1" type="text" placeholder="예: 20년 이상의 현장 경험"></label>
+              <label class="field numbered"><i>02</i><input name="strength2" type="text" placeholder="예: 체형과 목적에 맞는 추천"></label>
+              <label class="field numbered"><i>03</i><input name="strength3" type="text" placeholder="예: 오프라인 피팅 가능"></label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <div class="section-title"><span>05</span><div><h3>이용 안내와 연결 링크</h3><p>입력하지 않은 정보와 버튼은 완성 페이지에서 보이지 않아요.</p></div></div>
+            <div class="field-grid two-cols">
+              <label class="field"><span>주소</span><input name="address" type="text" placeholder="예: 서울시 중구 ..."></label>
+              <label class="field"><span>영업시간</span><input name="hours" type="text" placeholder="예: 매일 10:00–20:00"></label>
+              <label class="field"><span>전화번호</span><input name="phone" type="tel" placeholder="예: 02-1234-5678"></label>
+              <label class="field"><span>카카오톡 또는 상담 링크</span><input name="consultUrl" type="url" placeholder="https://..."></label>
+              <label class="field"><span>예약 링크</span><input name="bookingUrl" type="url" placeholder="https://..."></label>
+              <label class="field"><span>쇼핑몰 링크</span><input name="shopUrl" type="url" placeholder="https://..."></label>
+              <label class="field wide"><span>인스타그램 링크</span><input name="instagramUrl" type="url" placeholder="https://instagram.com/..."></label>
+            </div>
+          </section>
+        </form>
+
+        <aside class="preview-panel" aria-label="랜딩페이지 미리보기">
+          <div class="preview-toolbar"><div><span></span><span></span><span></span></div><strong>실시간 미리보기</strong><small id="saveStatus" role="status">자동 저장됨</small></div>
+          <article class="landing-preview" id="landingPreview">
+            <section class="preview-hero">
+              <div class="preview-hero-image placeholder" id="previewHeroImage"></div>
+              <div class="preview-hero-overlay"></div>
+              <div class="preview-hero-content">
+                <span class="preview-industry" id="previewIndustry">업종을 선택해 주세요</span>
+                <h2 id="previewName">상호명을 입력해 주세요</h2>
+                <p id="previewTagline">사업의 매력을 한 문장으로 소개해 보세요.</p>
+                <div class="hero-actions"><a id="heroContact" class="preview-button light" hidden>문의하기</a><a id="heroProducts" class="preview-button outline" href="#previewProducts">상품 보기</a></div>
+              </div>
+            </section>
+            <section class="preview-section preview-about" id="previewAboutSection">
+              <span class="preview-kicker">ABOUT US</span><h3>우리 사업을 소개합니다</h3>
+              <p id="previewDescription">사업 소개를 입력하면 고객에게 전할 이야기가 이곳에 표시됩니다.</p>
+            </section>
+            <section class="preview-section preview-products" id="previewProducts">
+              <span class="preview-kicker">PRODUCTS &amp; SERVICES</span><h3>주요 상품 및 서비스</h3>
+              <div class="product-cards" id="previewProductCards"></div>
+            </section>
+            <section class="preview-section preview-strengths" id="previewStrengthsSection">
+              <span class="preview-kicker">WHY CHOOSE US</span><h3>우리의 특별한 강점</h3>
+              <div class="strength-list" id="previewStrengths"></div>
+            </section>
+            <section class="preview-section preview-info" id="previewInfoSection">
+              <span class="preview-kicker">INFORMATION</span><h3>이용 안내</h3><div class="info-list" id="previewInfo"></div>
+            </section>
+            <section class="preview-cta" id="previewCtaSection" hidden>
+              <p>궁금한 점이 있으신가요?</p><h3>편하게 문의해 주세요.</h3><div class="cta-buttons" id="previewCtas"></div>
+            </section>
+            <footer class="preview-footer"><strong id="previewFooterName">NICE PH</strong><span>당신의 사업을 더 잘 알리는 공간</span></footer>
+            <div class="mobile-contact" id="mobileContact" hidden></div>
+          </article>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><span>© 2026 NICE PH</span><span>복잡한 홍보 업무를 단순하게.</span></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
