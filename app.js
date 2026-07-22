@@ -103,6 +103,8 @@
   const toast = document.querySelector("#toast");
   const saveStatus = document.querySelector("#saveStatus");
   const completionBar = document.querySelector("#completionBar");
+  const promotionHub = document.querySelector("#promotionHub");
+  const promoPrompt = document.querySelector("#promoPrompt");
   const SHARE_PREFIX = "#share=";
   const SHARE_URL_LIMIT = 1800000;
 
@@ -170,6 +172,34 @@
     toast.textContent = message;
     toast.classList.add("show");
     toastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
+  }
+
+  async function copyText(text, successMessage, button) {
+    const original = button.textContent;
+    try {
+      if (navigator.clipboard?.writeText && window.isSecureContext) await navigator.clipboard.writeText(text); else fallbackCopy(text);
+      button.textContent = "복사 완료"; showToast(successMessage);
+    } catch { button.textContent = "복사 실패"; showToast("복사하지 못했어요. 브라우저 권한을 확인해 주세요."); }
+    setTimeout(() => { button.textContent = original; }, 1800);
+  }
+
+  function generatePromotionContent() {
+    const topic = promoPrompt.value.trim();
+    if (!topic) { promoPrompt.focus(); showToast("알리고 싶은 소식을 먼저 입력해 주세요."); return; }
+    const business = state.businessName.trim() || "우리 매장";
+    const content = {
+      instagram: { title: `${business}, 오늘의 새로운 소식`, body: `${topic}\n\n더 궁금한 점은 편하게 메시지로 문의해 주세요.\n#${business.replace(/\s+/g, "")} #오늘의소식 #NICEPH` },
+      threads: { title: `${business}에서 전하는 짧은 이야기`, body: `${topic}\n\n여러분은 어떤 점이 가장 궁금하신가요? 댓글로 편하게 이야기 나눠요.` },
+      blog: { title: `${business} 새 소식을 자세히 알려드립니다`, body: `안녕하세요, ${business}입니다.\n\n${topic}\n\n방문 전 궁금한 내용이 있다면 언제든 문의해 주세요. 더 좋은 경험으로 보답하겠습니다.` },
+      notice: { title: `${business} 이용 안내`, body: `${topic}\n\n고객 여러분의 많은 관심 부탁드립니다. 자세한 내용은 매장으로 문의해 주세요.` }
+    };
+    Object.entries(content).forEach(([channel, value]) => {
+      const card = document.querySelector(`[data-promo-card="${channel}"]`);
+      card.querySelector("h3").textContent = value.title; card.querySelector("p").textContent = value.body;
+    });
+    document.querySelector("#generationStatus").textContent = "4개 채널용 데모 홍보글을 작성했어요.";
+    showToast("채널별 홍보글을 작성했어요.");
+    document.querySelector("#resultsTitle").scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function scheduleSave() {
@@ -439,13 +469,40 @@
     Data.Repository.clear(); state = Data.createBlankState(); syncBaseInputs(); refresh({ editors: true }); showToast("모든 입력 내용을 초기화했어요.");
   });
 
+  document.querySelector("#generatePromo").addEventListener("click", generatePromotionContent);
+  promoPrompt.addEventListener("keydown", (event) => { if ((event.ctrlKey || event.metaKey) && event.key === "Enter") generatePromotionContent(); });
+  promotionHub.addEventListener("click", (event) => {
+    const copyButton = event.target.closest("[data-copy-promo]");
+    if (!copyButton) return;
+    const card = document.querySelector(`[data-promo-card="${copyButton.dataset.copyPromo}"]`);
+    copyText(`${card.querySelector("h3").textContent}\n\n${card.querySelector("p").textContent}`, "홍보글을 복사했어요.", copyButton);
+  });
+  document.querySelector("#copyReply").addEventListener("click", (event) => {
+    const reply = document.querySelector("#recommendedReply blockquote").textContent.trim();
+    copyText(reply, "추천 답변을 복사했어요.", event.currentTarget);
+  });
+  document.querySelector("#schedulePublish").addEventListener("click", () => {
+    const channels = [...document.querySelectorAll('.publish-channels input:checked')].map((input) => input.value);
+    if (!channels.length) { showToast("발행할 채널을 하나 이상 선택해 주세요."); return; }
+    const schedule = document.querySelector('input[name="publishTime"]:checked').value;
+    document.querySelector("#publishStatus").textContent = `${channels.join(", ")} · ${schedule} 예약 데모가 준비됐어요. 실제 발행은 진행되지 않습니다.`;
+    showToast("예약 발행 UX 데모를 완료했어요.");
+  });
+
   function applyViewMode(options = {}) {
     const isPreview = window.location.hash === "#preview" || window.location.hash.startsWith(SHARE_PREFIX);
-    document.body.classList.toggle("preview-mode", isPreview); completionBar.hidden = !isPreview;
-    document.title = isPreview ? `${state.businessName.trim() || "NICE PH"} | 완성 페이지` : "NICE PH | 내 사업을 이해하는 홍보 공간";
+    const isPromotion = window.location.hash === "#promotion";
+    document.body.classList.toggle("preview-mode", isPreview);
+    document.body.classList.toggle("promotion-mode", isPromotion);
+    completionBar.hidden = !isPreview; promotionHub.hidden = !isPromotion;
+    document.querySelector("#promotionMenuLink").setAttribute("aria-current", isPromotion ? "page" : "false");
+    document.title = isPreview ? `${state.businessName.trim() || "NICE PH"} | 완성 페이지` : isPromotion ? "홍보센터 | NICE PH" : "NICE PH | 내 사업을 이해하는 홍보 공간";
     if (options.moveFocus) {
-      if (isPreview) window.scrollTo({ top: 0, behavior: "smooth" }); else document.querySelector("#builder").scrollIntoView({ behavior: "smooth" });
-      (isPreview ? document.querySelector("#backToEditor") : document.querySelector("#viewCompletedPage")).focus({ preventScroll: true });
+      if (isPreview || isPromotion || window.location.hash === "#top") window.scrollTo({ top: 0, behavior: "smooth" });
+      else if (window.location.hash === "#builder") document.querySelector("#builder").scrollIntoView({ behavior: "smooth" });
+      if (isPreview) document.querySelector("#backToEditor").focus({ preventScroll: true });
+      else if (isPromotion) promoPrompt.focus({ preventScroll: true });
+      else if (window.location.hash === "#builder") document.querySelector("#viewCompletedPage").focus({ preventScroll: true });
     }
   }
 

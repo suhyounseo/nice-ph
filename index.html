@@ -23,7 +23,10 @@
       <span class="brand-mark">N</span>
       <span><strong>NICE PH</strong><small>NICE Promotion Hub</small></span>
     </a>
-    <a class="header-link" href="#builder">페이지 만들기 <span aria-hidden="true">↗</span></a>
+    <nav class="header-nav" aria-label="주요 메뉴">
+      <a href="#builder">페이지 만들기</a>
+      <a href="#promotion" id="promotionMenuLink">홍보센터 <span aria-hidden="true">↗</span></a>
+    </nav>
   </header>
 
   <main id="top">
@@ -194,6 +197,52 @@
             <div class="mobile-contact" id="mobileContact" hidden></div>
           </article>
         </aside>
+      </div>
+    </section>
+
+    <section class="promotion-hub" id="promotionHub" aria-labelledby="promotionTitle" hidden>
+      <div class="promotion-shell">
+        <header class="promotion-heading">
+          <div><p class="eyebrow">NICE PROMOTION HUB</p><h1 id="promotionTitle">내 사업의 홍보를<br><em>한곳에서</em></h1><p>홍보글 작성부터 채널 배포와 댓글 응대까지, 소상공인의 반복 업무를 한 흐름으로 경험해 보세요.</p></div>
+          <span class="demo-badge">UX DEMO · API 연결 전</span>
+        </header>
+
+        <section class="hub-panel promo-composer" aria-labelledby="composerTitle">
+          <div class="hub-section-heading"><span>01</span><div><p>AI CONTENT</p><h2 id="composerTitle">어떤 소식을 알리고 싶으세요?</h2></div></div>
+          <label class="promo-prompt-field"><span>AI 홍보글 입력</span><textarea id="promoPrompt" rows="5" placeholder="예: 여름 신상품이 입고됐어요. 이번 주 방문 고객에게 10% 할인 혜택을 알리고 싶어요."></textarea></label>
+          <div class="composer-footer"><p>핵심 내용만 편하게 적어주세요. 채널별 말투는 NICE PH가 데모 문구로 구성합니다.</p><button type="button" class="hub-primary-button" id="generatePromo">AI 홍보글 작성 <span aria-hidden="true">→</span></button></div>
+        </section>
+
+        <section class="promotion-results" aria-labelledby="resultsTitle">
+          <div class="hub-title-row"><div><p class="eyebrow">CHANNEL CONTENT</p><h2 id="resultsTitle">채널별 홍보글</h2></div><small id="generationStatus" role="status">내용을 입력하고 홍보글을 작성해 보세요.</small></div>
+          <div class="promo-result-grid">
+            <article class="promo-result-card" data-promo-card="instagram"><span class="channel-label">Instagram</span><h3>감각적인 피드 홍보</h3><p>작성된 Instagram 홍보글이 여기에 표시됩니다.</p><button type="button" class="card-copy-button" data-copy-promo="instagram">복사</button></article>
+            <article class="promo-result-card" data-promo-card="threads"><span class="channel-label">Threads</span><h3>대화를 여는 짧은 소식</h3><p>작성된 Threads 홍보글이 여기에 표시됩니다.</p><button type="button" class="card-copy-button" data-copy-promo="threads">복사</button></article>
+            <article class="promo-result-card" data-promo-card="blog"><span class="channel-label">블로그</span><h3>검색에 도움이 되는 상세 글</h3><p>작성된 블로그 홍보글이 여기에 표시됩니다.</p><button type="button" class="card-copy-button" data-copy-promo="blog">복사</button></article>
+            <article class="promo-result-card" data-promo-card="notice"><span class="channel-label">홈페이지 공지</span><h3>고객에게 전하는 공식 안내</h3><p>작성된 홈페이지 공지가 여기에 표시됩니다.</p><button type="button" class="card-copy-button" data-copy-promo="notice">복사</button></article>
+          </div>
+        </section>
+
+        <div class="hub-lower-grid">
+          <section class="hub-panel publish-panel" aria-labelledby="publishTitle">
+            <div class="hub-section-heading"><span>02</span><div><p>DISTRIBUTION</p><h2 id="publishTitle">채널 배포</h2></div></div>
+            <fieldset class="hub-fieldset"><legend>발행 채널</legend><div class="publish-channels">
+              <label><input type="checkbox" value="Instagram"><span>Instagram</span></label><label><input type="checkbox" value="Threads"><span>Threads</span></label>
+              <label><input type="checkbox" value="Facebook"><span>Facebook</span></label><label><input type="checkbox" value="X"><span>X</span></label>
+              <label><input type="checkbox" value="네이버 블로그"><span>네이버 블로그</span></label><label><input type="checkbox" value="홈페이지"><span>홈페이지</span></label>
+            </div></fieldset>
+            <fieldset class="hub-fieldset"><legend>예약 시간</legend><div class="schedule-options">
+              <label><input type="radio" name="publishTime" value="지금" checked><span>지금</span></label><label><input type="radio" name="publishTime" value="오늘 오후"><span>오늘 오후</span></label><label><input type="radio" name="publishTime" value="내일 오전"><span>내일 오전</span></label>
+            </div></fieldset>
+            <button type="button" class="hub-primary-button full" id="schedulePublish">예약 발행</button><p class="demo-note" id="publishStatus" role="status">데모 화면으로 실제 채널에는 발행되지 않습니다.</p>
+          </section>
+
+          <section class="hub-panel comment-center" aria-labelledby="commentsTitle">
+            <div class="hub-section-heading"><span>03</span><div><p>COMMENT CENTER</p><h2 id="commentsTitle">댓글센터</h2></div></div>
+            <div class="comment-counts"><div><span>Instagram</span><strong>12</strong></div><div><span>Threads</span><strong>5</strong></div><div><span>블로그</span><strong>3</strong></div><div><span>홈페이지</span><strong>1</strong></div></div>
+            <article class="reply-card" id="recommendedReply"><div><span>AI 추천답변</span><small>Instagram · 방금 전</small></div><blockquote>관심 가져주셔서 감사합니다! 원하시는 스타일과 방문 일정을 알려주시면 더 자세히 안내해 드릴게요.</blockquote><button type="button" class="card-copy-button" id="copyReply">답변 복사</button></article>
+          </section>
+        </div>
       </div>
     </section>
   </main>
