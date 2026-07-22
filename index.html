@@ -13,7 +13,8 @@
       <span class="brand-mark">N</span><strong>NICE PH</strong>
     </div>
     <div class="completion-actions">
-      <button type="button" class="completion-button secondary" id="copyPageLink">페이지 링크 복사</button>
+      <button type="button" class="completion-button secondary" id="sharePage">공유 페이지 열기</button>
+      <button type="button" class="completion-button secondary" id="copyPageLink">링크 복사</button>
       <button type="button" class="completion-button" id="backToEditor">편집으로 돌아가기</button>
     </div>
   </div>
@@ -47,7 +48,13 @@
 
     <section class="builder" id="builder" aria-labelledby="builder-title">
       <div class="builder-heading">
-        <div><p class="step-label">STEP 01 — 사업 정보 입력</p><h2 id="builder-title">내 사업을 알려주세요</h2><p>입력하는 즉시 오른쪽 미리보기에 반영됩니다.</p></div>
+        <div>
+          <p class="step-label">STEP 01 — 사업 정보 입력</p><h2 id="builder-title">내 사업을 알려주세요</h2><p>입력하는 즉시 오른쪽 미리보기에 반영됩니다.</p>
+          <div class="input-mode-switch" aria-label="입력 방식">
+            <button type="button" class="active" aria-pressed="true">직접 입력</button>
+            <button type="button" id="aiInterview" aria-disabled="true">AI 인터뷰 <small>준비중</small></button>
+          </div>
+        </div>
         <div class="utility-actions">
           <button type="button" class="view-page-button" id="viewCompletedPage">완성 페이지 보기 <span aria-hidden="true">→</span></button>
           <button type="button" class="text-button" id="loadSample">예시 데이터 불러오기</button>
@@ -86,33 +93,48 @@
             </label>
             <input type="hidden" name="heroImage">
             <div class="uploaded-preview" data-image-preview="heroImage" hidden></div>
+            <label class="upload-field sub-upload-field">
+              <span class="upload-label">서브 이미지 <small>여러 장 선택 가능</small></span>
+              <span class="upload-box compact-box"><span class="upload-icon">＋</span><span><strong>사업 공간을 더 보여주세요</strong><small>한 번에 여러 이미지를 선택할 수 있어요</small></span></span>
+              <input class="image-input" type="file" name="subImageFiles" accept="image/*" multiple>
+            </label>
+            <div class="sub-image-list" id="subImageList" aria-label="등록된 서브 이미지"></div>
           </section>
 
           <section class="form-section">
-            <div class="section-title"><span>03</span><div><h3>주요 상품 또는 서비스</h3><p>대표 항목을 최대 3개까지 소개할 수 있어요.</p></div></div>
+            <div class="section-title"><span>03</span><div><h3>주요 상품 또는 서비스</h3><p>대표 항목을 필요한 만큼 소개할 수 있어요.</p></div></div>
             <div id="productFields"></div>
+            <button type="button" class="add-item-button" id="addProduct"><span aria-hidden="true">＋</span> 상품 추가</button>
           </section>
 
           <section class="form-section">
             <div class="section-title"><span>04</span><div><h3>우리 사업의 강점</h3><p>고객이 선택해야 할 이유를 짧고 분명하게 적어주세요.</p></div></div>
-            <div class="strength-fields">
-              <label class="field numbered"><i>01</i><input name="strength1" type="text" placeholder="예: 20년 이상의 현장 경험"></label>
-              <label class="field numbered"><i>02</i><input name="strength2" type="text" placeholder="예: 체형과 목적에 맞는 추천"></label>
-              <label class="field numbered"><i>03</i><input name="strength3" type="text" placeholder="예: 오프라인 피팅 가능"></label>
-            </div>
+            <div class="strength-fields" id="strengthFields"></div>
+            <button type="button" class="add-item-button" id="addStrength"><span aria-hidden="true">＋</span> 강점 추가</button>
           </section>
 
           <section class="form-section">
             <div class="section-title"><span>05</span><div><h3>이용 안내와 연결 링크</h3><p>입력하지 않은 정보와 버튼은 완성 페이지에서 보이지 않아요.</p></div></div>
             <div class="field-grid two-cols">
               <label class="field"><span>주소</span><input name="address" type="text" placeholder="예: 서울시 중구 ..."></label>
-              <label class="field"><span>영업시간</span><input name="hours" type="text" placeholder="예: 매일 10:00–20:00"></label>
+              <div class="field hours-field">
+                <span>영업시간</span>
+                <div class="hours-inputs">
+                  <label><small>오픈</small><input name="openTime" type="time" aria-label="오픈 시간"></label>
+                  <span class="hours-divider" aria-hidden="true">→</span>
+                  <label><small>마감</small><input name="closeTime" type="time" aria-label="마감 시간"></label>
+                </div>
+                <label class="next-day-check"><input name="closesNextDay" type="checkbox"><span>다음날 새벽까지 운영</span></label>
+                <textarea name="hoursNote" rows="2" placeholder="추가 안내 (선택)  예: 일요일 휴무"></textarea>
+              </div>
               <label class="field"><span>전화번호</span><input name="phone" type="tel" placeholder="예: 02-1234-5678"></label>
-              <label class="field"><span>카카오톡 또는 상담 링크</span><input name="consultUrl" type="url" placeholder="https://..."></label>
-              <label class="field"><span>예약 링크</span><input name="bookingUrl" type="url" placeholder="https://..."></label>
-              <label class="field"><span>쇼핑몰 링크</span><input name="shopUrl" type="url" placeholder="https://..."></label>
-              <label class="field wide"><span>인스타그램 링크</span><input name="instagramUrl" type="url" placeholder="https://instagram.com/..."></label>
             </div>
+          </section>
+
+          <section class="form-section">
+            <div class="section-title"><span>06</span><div><h3>고객 행동 버튼</h3><p>고객이 방문할 곳을 필요한 만큼 자유롭게 연결하세요.</p></div></div>
+            <div id="actionFields"></div>
+            <button type="button" class="add-item-button" id="addAction"><span aria-hidden="true">＋</span> 버튼 추가</button>
           </section>
         </form>
 
@@ -133,6 +155,7 @@
               <span class="preview-kicker">ABOUT US</span><h3>우리 사업을 소개합니다</h3>
               <p id="previewDescription">사업 소개를 입력하면 고객에게 전할 이야기가 이곳에 표시됩니다.</p>
             </section>
+            <section class="preview-gallery" id="previewGallerySection" hidden><div id="previewGallery"></div></section>
             <section class="preview-section preview-products" id="previewProducts">
               <span class="preview-kicker">PRODUCTS &amp; SERVICES</span><h3>주요 상품 및 서비스</h3>
               <div class="product-cards" id="previewProductCards"></div>
