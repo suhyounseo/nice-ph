@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="사업 정보와 사진으로 랜딩페이지와 채널별 홍보글을 만드는 NICE Promotion Hub">
-  <title>NICE PH | 내 사업을 이해하는 홍보 공간</title>
+  <meta name="description" content="사업 페이지 제작부터 홍보 콘텐츠 작성, 채널별 배포 준비와 고객 연결까지 관리하는 소상공인 통합 홍보 플랫폼입니다.">
+  <title>프로모링크 | 사업과 고객을 연결하는 통합 홍보 플랫폼</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="site-header" id="adminHeader">
-    <a class="brand" href="#business" aria-label="NICE PH"><span class="brand-mark">N</span><span><strong>NICE PH</strong><small>NICE Promotion Hub</small></span></a>
+    <a class="brand" href="#business" aria-label="프로모링크"><span class="brand-mark">P</span><span><strong>프로모링크</strong><small>PromoLink</small><em>사업과 고객을 연결하는 통합 홍보 플랫폼</em></span></a>
     <nav class="header-nav" aria-label="관리자 메뉴">
       <a href="#business" data-route="business">사업 페이지</a>
       <a href="#promotion" data-route="promotion">홍보센터</a>
@@ -18,14 +18,14 @@
   </header>
 
   <div class="completion-bar" id="completionBar" hidden>
-    <a class="brand compact" href="#preview"><span class="brand-mark">N</span><strong>NICE PH</strong></a>
+    <a class="brand compact" href="#preview"><span class="brand-mark">P</span><strong>프로모링크</strong></a>
     <span class="preview-status"><i></i> 관리자 미리보기 · 아직 공개되지 않았습니다</span>
     <div class="completion-actions">
       <button type="button" class="button" id="backToEditor">편집으로 돌아가기</button>
     </div>
   </div>
   <header class="public-header" id="publicHeader" hidden>
-    <a class="public-brand" href="#publicTop"><span class="footer-logo-mark" id="publicLogoMark">N</span><strong id="publicBrandName">NICE PH</strong></a>
+    <a class="public-brand" href="#publicTop"><span class="footer-logo-mark" id="publicLogoMark">P</span><strong id="publicBrandName">프로모링크</strong></a>
     <nav aria-label="고객용 메뉴"><a href="#previewAbout">소개</a><a href="#previewProductsSection">상품·서비스</a><a href="#previewNewsSection">소식</a><a href="#previewInfoSection">이용 안내</a></nav>
   </header>
 
@@ -38,7 +38,7 @@
           <p>사업 정보를 입력하면 고객에게 보여줄 랜딩페이지와 홍보 콘텐츠를 한곳에서 준비할 수 있습니다.</p>
           <a class="button" href="#builder">내 사업 페이지 만들기</a>
         </div>
-        <div class="intro-card" aria-hidden="true"><span>NICE</span><strong>당신의 사업 이야기를<br>한 페이지에 담아보세요.</strong></div>
+        <div class="intro-card" aria-hidden="true"><span>PromoLink</span><strong>내 사업을 필요한 고객에게<br>더 쉽게 연결하세요.</strong></div>
       </section>
 
       <section class="builder" id="builder">
@@ -49,7 +49,7 @@
             <button type="button" class="button secondary" id="saveDraft">임시저장</button>
             <button type="button" class="button" id="openPublish">발행하기</button>
             <button type="button" class="text-button" id="aiInterview">AI 인터뷰 체험</button>
-            <button type="button" class="text-button" id="loadSample">NICE 예시</button>
+            <button type="button" class="text-button" id="loadSample">NICE 업체 예시</button>
             <button type="button" class="text-button" id="exportData">JSON 백업</button>
             <button type="button" class="text-button" id="importData">JSON 불러오기</button>
             <input type="file" id="importDataFile" accept=".json,application/json" hidden>
@@ -136,11 +136,11 @@
               <section class="preview-cta" id="previewCtaSection" hidden><p>궁금한 점이 있으신가요?</p><h3>편하게 문의해 주세요.</h3><div class="cta-buttons" id="previewCtas"></div></section>
               <footer class="customer-footer">
                 <div class="footer-main">
-                  <div class="footer-identity"><div class="footer-logo" id="previewFooterLogo"><span class="footer-logo-mark">N</span></div><div><strong id="previewFooterName">NICE PH</strong><p id="previewFooterTagline">당신의 사업을 더 잘 알리는 공간</p></div></div>
+                  <div class="footer-identity"><div class="footer-logo" id="previewFooterLogo"><span class="footer-logo-mark">P</span></div><div><strong id="previewFooterName">업체명</strong><p id="previewFooterTagline">내 사업을 필요한 고객에게 연결합니다</p></div></div>
                   <div class="footer-actions" id="previewFooterActions"></div>
                 </div>
                 <div class="footer-details" id="previewFooterDetails"></div>
-                <div class="footer-legal"><span id="previewBusinessInfo"></span><span id="previewCopyright">© 2026 NICE PH. All rights reserved.</span></div>
+                <div class="footer-legal"><span id="previewBusinessInfo"></span><span><span id="previewCopyright">© 2026 업체명. All rights reserved.</span><small class="made-with">Made with PromoLink</small></span></div>
               </footer>
               <div class="mobile-contact" id="mobileContact" hidden></div>
             </article>
@@ -151,7 +151,7 @@
 
     <section class="admin-view promotion-view" id="promotionView" hidden>
       <div class="page-shell">
-        <header class="page-heading"><p class="eyebrow">NICE PROMOTION HUB</p><h1>사업 정보로 만드는<br><em>채널별 홍보글</em></h1><p>한 번 입력하고, 채널에 맞는 문구를 복사하거나 홈페이지 게시판에 바로 등록하세요.</p></header>
+        <header class="page-heading"><p class="eyebrow">PROMOLINK PROMOTION HUB</p><h1>사업 정보로 만드는<br><em>채널별 홍보글</em></h1><p>프로모링크로 고객에게 더 쉽게 연결하세요. 한 번 입력하고 채널에 맞는 문구와 사진을 준비할 수 있습니다.</p></header>
         <ol class="step-nav"><li class="active">1. 홍보 내용 입력</li><li>2. 채널별 결과 확인</li><li>3. 복사·게시·보관</li></ol>
         <section class="panel">
           <div class="form-title"><span>01</span><div><h2>무엇을 홍보하시나요?</h2><p>핵심만 적으면 현재 사업 정보를 함께 활용합니다.</p></div></div>
@@ -164,8 +164,17 @@
             <label class="field"><span>상품 또는 서비스</span><input id="promoProduct" placeholder="예: 여름 신상 원피스"></label>
             <label class="field"><span>강조할 장점</span><input id="promoBenefit" placeholder="예: 체형별 맞춤 추천"></label>
             <label class="field"><span>행동 유도</span><input id="promoCta" placeholder="예: 지금 매장에 방문해 보세요"></label>
-            <label class="field"><span>사진 선택</span><select id="promoPhoto"><option value="">사진 없음</option></select></label>
+            <label class="field" hidden><span>사진 선택</span><select id="promoPhoto"><option value="">사진 없음</option></select></label>
           </div>
+          <section class="promotion-photo-panel" aria-labelledby="promotionPhotoTitle">
+            <div class="title-row"><div><p class="eyebrow">PROMOTION PHOTOS</p><h3 id="promotionPhotoTitle">홍보사진</h3><p>업로드하거나 이미 등록한 사진을 골라 채널별 홍보글에 함께 사용하세요.</p></div><strong id="promotionImageCapacity">0KB 사용</strong></div>
+            <div class="promotion-photo-tools">
+              <label class="upload-field compact-upload"><span>새 이미지 업로드</span><span class="upload-box">＋ <strong>여러 장 선택</strong><small>업로드 즉시 자동 압축</small></span><input type="file" id="promotionImageFiles" accept="image/*" multiple></label>
+              <div class="source-picker"><label class="field"><span>기존 이미지 가져오기</span><select id="promotionImageSource"><option value="">이미지를 선택하세요</option></select></label><button type="button" class="button secondary" id="addPromotionSource">사진 추가</button></div>
+            </div>
+            <p class="status-note" id="promotionImageStatus" role="status">홍보사진은 대표 이미지, 순서, 설명과 함께 임시저장됩니다.</p>
+            <div class="promotion-image-list" id="promotionImageList"></div>
+          </section>
           <fieldset class="tone-options"><legend>말투 선택</legend><label><input type="radio" name="promoTone" value="친근하게" checked><span>친근하게</span></label><label><input type="radio" name="promoTone" value="전문적으로"><span>전문적으로</span></label><label><input type="radio" name="promoTone" value="감성적으로"><span>감성적으로</span></label><label><input type="radio" name="promoTone" value="간결하게"><span>간결하게</span></label><label><input type="radio" name="promoTone" value="판매 중심"><span>판매 중심</span></label></fieldset>
           <button type="button" class="button large" id="generatePromo">채널별 홍보글 만들기</button>
         </section>
@@ -223,7 +232,7 @@
     <div class="modal" id="pagePublishModal" hidden><div class="modal-card wide publish-page-modal"><button class="modal-close" data-close-modal="pagePublishModal" aria-label="닫기">×</button><p class="eyebrow">PUBLISH PAGE</p><h2>사업 페이지 발행</h2><div class="publish-layout"><div><div class="field-grid two"><label class="field"><span>페이지 제목</span><input id="pageTitle" maxlength="70"></label><label class="field"><span>핵심 키워드</span><input id="pageKeywords" placeholder="쉼표로 구분"></label></div><label class="field"><span>검색 설명</span><textarea id="pageDescription" rows="3" maxlength="160"></textarea></label><div class="field-grid two"><label class="field"><span>대표 이미지</span><select id="pagePublishImage"><option value="hero">현재 대표 이미지</option><option value="">이미지 없음</option></select></label><label class="field"><span>공개 범위</span><select id="pageVisibility"><option value="public">전체 공개</option><option value="unlisted">링크를 아는 사람만</option><option value="private">비공개</option></select></label></div><label class="field"><span>공개 주소 미리보기</span><input id="pageUrlPreview" readonly></label></div><aside class="publish-checklist"><h3>발행 전 체크리스트</h3><div id="publishChecklist"></div><p id="publishWarning" class="status-note"></p></aside></div><label class="check"><input id="publishDespiteMissing" type="checkbox"><span>누락 항목을 확인했으며 현재 내용으로 발행합니다.</span></label><button type="button" class="button full" id="confirmPagePublish">발행하기</button></div></div>
     <div class="modal" id="publishCompleteModal" hidden><div class="modal-card publish-complete"><p class="eyebrow">PUBLISHED</p><h2>사업 페이지를 발행했습니다</h2><p id="publishedUrlText" class="published-url"></p><div class="qr-wrap"><img id="publishedQr" alt="공개 페이지 QR 코드"><small>QR 코드는 브라우저에서 안전하게 생성했습니다.</small></div><div class="publish-complete-actions"><a class="button" id="openPublishedPage" target="_blank" rel="noopener">공개 페이지 열기</a><button type="button" class="button secondary" id="copyPublishedLink">링크 복사</button><button type="button" class="button secondary" id="continueEditing">계속 수정</button></div></div></div>
   </main>
-  <footer class="site-footer"><span>© 2026 NICE PH</span><span>복잡한 홍보 업무를 단순하게.</span></footer>
+  <footer class="site-footer"><span>© 2026 프로모링크 · PromoLink</span><span>사업과 고객을 연결하는 통합 홍보 플랫폼</span></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>
