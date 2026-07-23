@@ -15,11 +15,32 @@
     "기타": "우리 사업만의 특별한 가치를 전합니다."
   };
   const ACTION_TYPES = {
-    phone:["전화","TEL"], sms:["문자","SMS"], email:["이메일","@"], kakao:["카카오톡","K"], kakaochannel:["카카오채널","K+"],
-    navermap:["네이버지도","N"], naverbooking:["네이버예약","N✓"], smartstore:["스마트스토어","N"], instagram:["인스타그램","IG"],
-    threads:["Threads","TH"], facebook:["Facebook","f"], x:["X","X"], youtube:["YouTube","▶"], blog:["블로그","B"],
-    showroom:["쇼룸","SR"], ownmall:["자사몰","SHOP"], coupang:["쿠팡","C"], link:["기타 링크","↗"]
+    phone:["전화"], sms:["문자"], email:["이메일"], kakao:["카카오톡"], kakaochannel:["카카오채널"],
+    navermap:["네이버지도"], naverbooking:["네이버예약"], smartstore:["스마트스토어"], instagram:["인스타그램"],
+    threads:["Threads"], facebook:["Facebook"], x:["X"], youtube:["YouTube"], blog:["블로그"],
+    showroom:["쇼룸"], ownmall:["자사몰"], coupang:["쿠팡"], link:["기타 링크"]
   };
+  const ICONS = {
+    phone:'<path d="M7 3h3l1.3 4-2 1.6a15 15 0 0 0 6.1 6.1l1.6-2 4 1.3v3c0 1.1-.9 2-2 2A16 16 0 0 1 5 5c0-1.1.9-2 2-2Z"/>',
+    sms:'<path d="M4 5.5h16v11H9l-5 4v-15Z"/><path d="M8 10h8M8 13h5"/>',
+    email:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/>',
+    kakao:'<path d="M12 4c5 0 9 3.1 9 7s-4 7-9 7c-1 0-2-.1-2.9-.4L5 20l1.2-3.6C4.2 15.1 3 13.2 3 11c0-3.9 4-7 9-7Z"/>',
+    kakaochannel:'<path d="M12 4c5 0 9 3.1 9 7s-4 7-9 7c-1 0-2-.1-2.9-.4L5 20l1.2-3.6C4.2 15.1 3 13.2 3 11c0-3.9 4-7 9-7Z"/><path d="M12 8v6M9 11h6"/>',
+    navermap:'<path d="M5 20V4l5 8V4l9 16V4"/><path d="M4 20h16"/>',
+    naverbooking:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16M8 14l2 2 5-5"/>',
+    smartstore:'<path d="M5 9h14l-1 11H6L5 9Z"/><path d="M8 9V7a4 4 0 0 1 8 0v2M9 16V12l6 4v-4"/>',
+    instagram:'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>',
+    threads:'<path d="M17.5 8.2C16.7 5.7 14.8 4 12 4c-4 0-7 3-7 8s2.8 8 7 8c3.2 0 5.7-1.7 5.7-4.4 0-2.4-2-3.8-5-3.8-2.5 0-4.2 1.1-4.2 2.8 0 1.4 1.2 2.4 2.8 2.4 3.4 0 5.6-2.7 5.6-6.1 0-2.7-1.5-4.2-4.1-4.2-1.5 0-2.8.5-3.8 1.3"/>',
+    facebook:'<path d="M14 21v-8h3l.5-4H14V7c0-1.2.5-2 2-2h2V2.2c-.7-.1-1.6-.2-2.8-.2-3 0-5.2 1.8-5.2 5.3V9H7v4h3v8"/>',
+    x:'<path d="M4 3l16 18M20 3 4 21"/>',
+    youtube:'<rect x="2.5" y="6" width="19" height="12" rx="4"/><path d="m10 9 5 3-5 3V9Z"/>',
+    blog:'<path d="M5 4h11l3 3v13H5V4Z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+    showroom:'<path d="M4 10 12 3l8 7v10H4V10Z"/><path d="M9 20v-7h6v7M8 9h8"/>',
+    ownmall:'<path d="M3 8h18l-2-5H5L3 8Z"/><path d="M5 8v12h14V8M9 20v-6h6v6"/>',
+    coupang:'<path d="M18 8a7 7 0 1 0 0 8"/><path d="M18 8h3v3M18 16h3v-3"/>',
+    link:'<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"/>'
+  };
+  const iconSvg = (type) => `<svg class="svg-icon" viewBox="0 0 24 24" aria-hidden="true">${ICONS[type] || ICONS.link}</svg>`;
   const CHANNELS = {
     instagram:{name:"Instagram",url:"https://www.instagram.com/"},
     threads:{name:"Threads",url:"https://www.threads.net/"},
@@ -53,10 +74,10 @@
     const draft = (v = {}) => ({id:v.id || id("draft"),title:v.title || "",date:v.date || new Date().toISOString(),purpose:v.purpose || "기타",channels:v.channels || {},inputs:v.inputs || {},status:v.status || "작성",websitePostId:v.websitePostId || ""});
     const comment = (v = {}) => ({id:v.id || id("comment"),channel:v.channel || "Instagram",author:v.author || "고객",content:v.content || "",date:v.date || new Date().toISOString(),answered:Boolean(v.answered),aiDraft:v.aiDraft || "관심 가져주셔서 감사합니다. 자세한 내용은 편하게 문의해 주세요!"});
     const blank = () => ({
-      schemaVersion:4,
-      businessProfile:{industry:"",businessName:"",tagline:"",description:"",heroImage:null,subImages:[],address:"",phone:"",openTime:"",closeTime:"",closesNextDay:false,hoursNote:""},
+      schemaVersion:5,
+      businessProfile:{industry:"",businessName:"",tagline:"",description:"",heroImage:null,logoImage:null,subImages:[],address:"",serviceArea:"",phone:"",representativeName:"",businessNumber:"",openTime:"",closeTime:"",closesNextDay:false,hoursNote:""},
       products:[],strengths:[],actionLinks:[],websitePosts:[],promotionDrafts:[],comments:[],
-      settings:{visiblePostCategories:[...CATEGORIES]}
+      settings:{visiblePostCategories:[...CATEGORIES],publishMeta:{title:"",description:"",keywords:"",visibility:"public",slug:"",publishedAt:"",image:"hero"}}
     });
     const migrate = (raw) => {
       const base = blank();
@@ -66,7 +87,7 @@
         subImages:raw.subImages,address:raw.address,phone:raw.phone,openTime:raw.openTime,closeTime:raw.closeTime,
         closesNextDay:raw.closesNextDay,hoursNote:raw.hoursNote
       };
-      base.businessProfile = {...base.businessProfile,...profile,heroImage:image(profile.heroImage,"cover"),subImages:(profile.subImages || []).map(x=>image(x,"contain")).filter(Boolean)};
+      base.businessProfile = {...base.businessProfile,...profile,heroImage:image(profile.heroImage,"cover"),logoImage:image(profile.logoImage,"contain"),subImages:(profile.subImages || []).map(x=>image(x,"contain")).filter(Boolean)};
       base.products = (raw.products || []).map(product);
       base.strengths = (raw.strengths || []).map(x=>typeof x === "string" ? x : x?.text || "").filter(Boolean);
       base.actionLinks = (raw.actionLinks || raw.actions || []).map(action);
@@ -76,7 +97,7 @@
       base.settings = {...base.settings,...(raw.settings || {})};
       return base;
     };
-    const serialize = (value) => ({schemaVersion:4,businessProfile:value.businessProfile,products:value.products,strengths:value.strengths,actionLinks:value.actionLinks,websitePosts:value.websitePosts,promotionDrafts:value.promotionDrafts,comments:value.comments,settings:value.settings});
+    const serialize = (value) => ({schemaVersion:5,businessProfile:value.businessProfile,products:value.products,strengths:value.strengths,actionLinks:value.actionLinks,websitePosts:value.websitePosts,promotionDrafts:value.promotionDrafts,comments:value.comments,settings:value.settings});
     const load = () => {
       try {
         const params = new URLSearchParams(location.search);
@@ -173,7 +194,7 @@
   function populateForm() {
     const p=state.businessProfile, form=$("#businessForm");
     Object.entries(p).forEach(([key,value])=>{
-      if(["heroImage","subImages"].includes(key)) return;
+      if(["heroImage","logoImage","subImages"].includes(key)) return;
       const input=form.elements[key]; if(!input) return;
       if(input.type==="checkbox") input.checked=Boolean(value); else input.value=value || "";
     });
@@ -198,22 +219,23 @@
     const options=Object.entries(ACTION_TYPES).map(([key,[label]])=>`<option value="${key}">${label}</option>`).join("");
     $("#actionFields").innerHTML=state.actionLinks.map((a,i)=>`
       <article class="repeat-card" data-action="${i}">
-        <header><strong><span class="brand-icon">${ACTION_TYPES[a.type]?.[1]||"↗"}</span> 버튼 ${String(i+1).padStart(2,"0")}</strong><button type="button" class="icon-button danger" data-action-delete>×</button></header>
+        <header><strong><span class="brand-icon">${iconSvg(a.type)}</span> 버튼 ${String(i+1).padStart(2,"0")}</strong><button type="button" class="icon-button danger" data-action-delete>×</button></header>
         <div class="action-type-row"><label class="field"><span>버튼 종류</span><select data-action-field="type">${options.replace(`value="${a.type}"`,`value="${a.type}" selected`)}</select></label><label class="field"><span>버튼명</span><input data-action-field="label" value="${escapeHtml(a.label)}"></label></div>
         <label class="field"><span>URL 또는 전화번호</span><input data-action-field="url" value="${escapeHtml(a.url)}" placeholder="https:// 또는 전화번호"></label>
         <label class="check new-window"><input type="checkbox" data-action-field="newWindow" ${a.newWindow?"checked":""}><span>새 창에서 열기</span></label>
       </article>`).join("");
   }
   function renderBusinessImages() {
-    const p=state.businessProfile, hero=imageSrc(p.heroImage);
+    const p=state.businessProfile, hero=imageSrc(p.heroImage), logo=imageSrc(p.logoImage);
     $("#heroImageControl").hidden=!hero; $("#heroThumb").src=hero || "";
+    $("#logoImageControl").hidden=!logo; $("#logoThumb").src=logo || "";
     $("#heroImageFit").value=imageFit(p.heroImage,"cover");
     $("#subImageList").innerHTML=p.subImages.map((img,i)=>`<div class="image-item" data-sub-image="${i}"><img src="${imageSrc(img)}" alt="서브 이미지 ${i+1}"><select data-sub-fit><option value="contain" ${imageFit(img)==="contain"?"selected":""}>전체 이미지 보기</option><option value="original" ${imageFit(img)==="original"?"selected":""}>원본 비율</option><option value="cover" ${imageFit(img)==="cover"?"selected":""}>화면 채우기</option></select><button type="button" data-sub-delete>삭제</button></div>`).join("");
   }
   function actionButton(a) {
     const url=safeUrl(a.url,a.type); if(!url) return "";
     const target=a.newWindow && !/^(tel:|sms:|mailto:)/.test(url)?' target="_blank" rel="noopener"':"";
-    return `<a class="action-button" href="${escapeHtml(url)}"${target}><span class="brand-icon">${ACTION_TYPES[a.type]?.[1]||"↗"}</span>${escapeHtml(a.label)}</a>`;
+    return `<a class="action-button" href="${escapeHtml(url)}"${target}><span class="brand-icon">${iconSvg(a.type)}</span>${escapeHtml(a.label)}</a>`;
   }
   function formatHours() {
     const p=state.businessProfile; if(!p.openTime && !p.closeTime && !p.hoursNote) return "";
@@ -236,6 +258,12 @@
     $("#previewTagline").textContent=p.tagline || INDUSTRIES[p.industry] || "사업의 매력을 한 문장으로 소개해 보세요.";
     $("#previewDescription").textContent=p.description || "사업 소개를 입력하면 고객에게 전할 이야기가 여기에 표시됩니다.";
     $("#previewFooterName").textContent=p.businessName || "NICE PH";
+    $("#previewFooterTagline").textContent=p.tagline || INDUSTRIES[p.industry] || "당신의 사업을 더 잘 알리는 공간";
+    const initial=(p.businessName || "N").trim().charAt(0).toUpperCase();
+    const logo=imageSrc(p.logoImage);
+    $("#previewFooterLogo").innerHTML=`<span class="footer-logo-mark">${logo?`<img src="${logo}" alt="${escapeHtml(p.businessName||"업체")} 로고">`:escapeHtml(initial)}</span>`;
+    $("#publicLogoMark").innerHTML=logo?`<img src="${logo}" alt="">`:escapeHtml(initial);
+    $("#publicBrandName").textContent=p.businessName || "NICE PH";
     const validProducts=state.products.filter(x=>x.name||x.description||x.price||imageSrc(x.image));
     $("#previewProductsSection").hidden=!validProducts.length;
     $("#previewProductCards").innerHTML=validProducts.map(x=>`<article class="product-card">${imageSrc(x.image)?`<div class="product-image fit-${imageFit(x.image)}"><img src="${imageSrc(x.image)}" alt="${escapeHtml(x.name)}"></div>`:""}<div class="product-body"><h4>${escapeHtml(x.name||"상품·서비스")}</h4><p>${escapeHtml(x.description)}</p>${x.price?`<strong>${escapeHtml(x.price)}</strong>`:""}</div></article>`).join("");
@@ -247,9 +275,14 @@
     $("#previewInfoSection").hidden=!info.length; $("#previewInfo").innerHTML=info.map(([k,v])=>`<div class="info-row"><strong>${k}</strong><span>${escapeHtml(v)}</span></div>`).join("");
     const actions=state.actionLinks.filter(x=>x.label&&x.url);
     $("#previewCtaSection").hidden=!actions.length; $("#previewCtas").innerHTML=actions.map(actionButton).join("");
+    $("#previewFooterActions").innerHTML=actions.slice(0,4).map(actionButton).join("");
     $("#heroActions").innerHTML=actions.slice(0,2).map(actionButton).join("");
     $("#mobileContact").hidden=!actions.length; $("#mobileContact").innerHTML=actions[0]?actionButton(actions[0]):"";
     const posts=publicPosts(); $("#previewNewsSection").hidden=!posts.length; $("#previewPostCards").innerHTML=posts.slice(0,3).map(postCard).join("");
+    const footerDetails=[["ADDRESS",p.address||p.serviceArea],["PHONE",p.phone],["OPENING HOURS",formatHours()]].filter(x=>x[1]);
+    $("#previewFooterDetails").innerHTML=footerDetails.map(([label,value])=>`<div class="footer-detail"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
+    $("#previewBusinessInfo").textContent=[p.representativeName&&`대표 ${p.representativeName}`,p.businessNumber&&`사업자등록번호 ${p.businessNumber}`].filter(Boolean).join(" · ");
+    $("#previewCopyright").textContent=`© ${new Date().getFullYear()} ${p.businessName||"NICE PH"}. All rights reserved.`;
     renderProgress();
   }
   function renderProgress() {
@@ -293,6 +326,7 @@
     if(t.closest("[data-action-delete]")){state.actionLinks.splice(+action.dataset.action,1);renderActions();scheduleSave();renderPreview();}
     if(t.closest("[data-sub-delete]")){state.businessProfile.subImages.splice(+t.closest("[data-sub-image]").dataset.subImage,1);renderBusinessImages();scheduleSave();renderPreview();}
     if(t.closest('[data-remove-image="hero"]')){state.businessProfile.heroImage=null;renderBusinessImages();scheduleSave();renderPreview();}
+    if(t.closest('[data-remove-image="logo"]')){state.businessProfile.logoImage=null;renderBusinessImages();scheduleSave();renderPreview();}
   });
   $("#heroImageFit").addEventListener("change",e=>{if(state.businessProfile.heroImage)state.businessProfile.heroImage.fit=e.target.value;scheduleSave();renderPreview();});
   async function handleImages(files, fit, callback) {
@@ -305,6 +339,7 @@
     if(estimateBytes()>4.3*1024*1024) toast("브라우저 저장 한도에 가까워졌습니다. JSON 백업을 권장합니다.");
   }
   $("#heroImageFile").addEventListener("change",e=>handleImages([...e.target.files],"cover",r=>{state.businessProfile.heroImage=r[0];renderBusinessImages();renderPreview();scheduleSave();e.target.value="";}));
+  $("#logoImageFile").addEventListener("change",e=>handleImages([...e.target.files],"contain",r=>{state.businessProfile.logoImage=r[0];renderBusinessImages();renderPreview();scheduleSave();e.target.value="";}));
   $("#subImageFiles").addEventListener("change",e=>handleImages([...e.target.files],"contain",r=>{state.businessProfile.subImages.push(...r);renderBusinessImages();renderPreview();scheduleSave();e.target.value="";}));
   $("#productFields").addEventListener("change",e=>{if(e.target.matches("[data-product-file]")){const card=e.target.closest("[data-product]"),input=e.target;handleImages([...input.files],"cover",r=>{state.products[+card.dataset.product].image=r[0];renderProducts();renderPreview();scheduleSave();});}});
   $("#addProduct").onclick=()=>{state.products.push(Data.product());renderProducts();scheduleSave();};
@@ -320,19 +355,137 @@
   $("#loadSample").onclick=()=>{if(confirm("현재 사업 정보를 NICE 예시로 바꿀까요? 게시물과 홍보글 보관함은 유지됩니다.")){const sample=sampleData();sample.websitePosts=state.websitePosts;sample.promotionDrafts=state.promotionDrafts;sample.comments=state.comments;state=sample;renderAll();scheduleSave();toast("NICE 예시를 불러왔습니다.");}};
   $("#resetAll").onclick=()=>{if(confirm("모든 사업정보, 게시물, 홍보글을 초기화할까요? 복구할 수 없습니다.")){state=Data.blank();promoOutputs={};renderAll();scheduleSave();toast("전체 데이터를 초기화했습니다.");}};
 
-  function createShareUrl() {
+  function createDataUrl(mode = "preview") {
     const snapshot=Data.serialize(state);
     const encode=x=>btoa(unescape(encodeURIComponent(JSON.stringify(x))));
     let encoded=encode(snapshot), excluded=false;
     if(encoded.length>480000){
-      const slim=clone(snapshot); slim.businessProfile.heroImage=null;slim.businessProfile.subImages=[];slim.products.forEach(x=>x.image=null);slim.websitePosts.forEach(x=>{x.heroImage=null;x.extraImages=[];});encoded=encode(slim);excluded=true;
+      const slim=clone(snapshot); slim.businessProfile.heroImage=null;slim.businessProfile.logoImage=null;slim.businessProfile.subImages=[];slim.products.forEach(x=>x.image=null);slim.websitePosts.forEach(x=>{x.heroImage=null;x.extraImages=[];});encoded=encode(slim);excluded=true;
     }
     if(encoded.length>480000) throw new Error("작성 데이터가 링크에 포함할 수 있는 크기를 넘었습니다.");
-    const url=new URL(location.href);url.search="";url.searchParams.set("share",encoded);url.hash="preview";return {url:url.toString(),excluded};
+    const url=new URL(location.href);url.search="";
+    if(mode==="published")url.searchParams.set("page",state.settings.publishMeta.slug);
+    url.searchParams.set("share",encoded);url.hash=mode==="published"?"published":"preview";return {url:url.toString(),excluded};
   }
   $("#viewCompletedPage").onclick=()=>{location.hash="preview";};
   $("#backToEditor").onclick=()=>{location.hash="business";};
-  $("#copyPageLink").onclick=async()=>{try{const result=createShareUrl(),ok=await copyText(result.url);if(!ok)throw new Error("클립보드 권한이 허용되지 않았습니다.");toast(result.excluded?"이미지를 제외한 작성 데이터 링크를 복사했습니다.":"작성 데이터를 포함한 페이지 링크를 복사했습니다.");}catch(error){toast(`${error.message} 현재 브라우저의 완성 페이지는 계속 볼 수 있습니다.`);}};
+  $("#saveDraft").onclick=()=>{Data.save(state);toast("현재 작업을 브라우저에 임시저장했습니다.");};
+
+  const INTERVIEW_QUESTIONS = [
+    "어떤 사업을 운영하나요?",
+    "주요 고객은 누구인가요?",
+    "가장 중요한 상품 또는 서비스는 무엇인가요?",
+    "고객이 선택해야 하는 이유는 무엇인가요?",
+    "고객에게 원하는 행동은 무엇인가요?"
+  ];
+  let interviewIndex=0,interviewAnswers=["","","","",""];
+  function renderInterview(){
+    $("#interviewStep").innerHTML=`<label for="interviewAnswer">${interviewIndex+1}. ${INTERVIEW_QUESTIONS[interviewIndex]}</label><textarea id="interviewAnswer" placeholder="편하게 이야기하듯 적어주세요.">${escapeHtml(interviewAnswers[interviewIndex])}</textarea>`;
+    $("#interviewCounter").textContent=`${interviewIndex+1} / ${INTERVIEW_QUESTIONS.length}`;
+    $("#interviewPrev").disabled=interviewIndex===0;$("#interviewNext").textContent=interviewIndex===INTERVIEW_QUESTIONS.length-1?"입력란에 반영":"다음";
+  }
+  $("#aiInterview").onclick=()=>{interviewIndex=0;interviewAnswers=["","","","",""];renderInterview();$("#interviewModal").hidden=false;};
+  $("#interviewPrev").onclick=()=>{interviewAnswers[interviewIndex]=$("#interviewAnswer").value.trim();interviewIndex--;renderInterview();};
+  $("#interviewNext").onclick=()=>{
+    interviewAnswers[interviewIndex]=$("#interviewAnswer").value.trim();
+    if(!interviewAnswers[interviewIndex]){toast("답변을 입력해 주세요.");return;}
+    if(interviewIndex<INTERVIEW_QUESTIONS.length-1){interviewIndex++;renderInterview();return;}
+    const p=state.businessProfile,industry=Object.keys(INDUSTRIES).find(x=>interviewAnswers[0].includes(x));
+    if(industry)p.industry=industry;
+    if(!p.businessName)p.businessName=interviewAnswers[0].replace(industry||"","").trim().slice(0,40)||interviewAnswers[0].slice(0,40);
+    p.description=`${interviewAnswers[0]}\n주요 고객은 ${interviewAnswers[1]}입니다.\n${interviewAnswers[3]}`;
+    if(!p.tagline)p.tagline=interviewAnswers[3].slice(0,90);
+    if(state.products.length)state.products[0].name=interviewAnswers[2];else state.products.push(Data.product({name:interviewAnswers[2]}));
+    if(state.strengths.length)state.strengths[0]=interviewAnswers[3];else state.strengths.push(interviewAnswers[3]);
+    state.actionLinks.push(Data.action({type:"link",label:interviewAnswers[4].slice(0,30),url:""}));
+    $("#interviewModal").hidden=true;renderAll();scheduleSave();toast("인터뷰 답변을 사업정보 입력란에 반영했습니다.");
+  };
+
+  function generateQrDataUrl(text){
+    const version=5,size=37,dataCodewords=108,eccCount=26,bytes=[...new TextEncoder().encode(text)];
+    if(bytes.length>106)throw new Error("QR 코드에 담을 주소가 너무 깁니다.");
+    const bits=[];const push=(value,length)=>{for(let i=length-1;i>=0;i--)bits.push((value>>>i)&1);};
+    push(4,4);push(bytes.length,8);bytes.forEach(byte=>push(byte,8));
+    for(let i=0;i<4&&bits.length<dataCodewords*8;i++)bits.push(0);
+    while(bits.length%8)bits.push(0);
+    const data=[];for(let i=0;i<bits.length;i+=8)data.push(bits.slice(i,i+8).reduce((a,b)=>(a<<1)|b,0));
+    for(let pad=0;data.length<dataCodewords;pad++)data.push(pad%2?0x11:0xec);
+    const exp=new Array(512),log=new Array(256);let x=1;
+    for(let i=0;i<255;i++){exp[i]=x;log[x]=i;x<<=1;if(x&0x100)x^=0x11d;}for(let i=255;i<512;i++)exp[i]=exp[i-255];
+    const mul=(a,b)=>a&&b?exp[log[a]+log[b]]:0;
+    let generator=[1];
+    for(let i=0;i<eccCount;i++){const next=new Array(generator.length+1).fill(0);generator.forEach((coefficient,j)=>{next[j]^=coefficient;next[j+1]^=mul(coefficient,exp[i]);});generator=next;}
+    const message=[...data,...new Array(eccCount).fill(0)];
+    for(let i=0;i<data.length;i++){const factor=message[i];if(factor)generator.forEach((coefficient,j)=>message[i+j]^=mul(coefficient,factor));}
+    const codewords=[...data,...message.slice(data.length)],stream=[];codewords.forEach(byte=>{for(let i=7;i>=0;i--)stream.push((byte>>>i)&1);});
+    const modules=Array.from({length:size},()=>Array(size).fill(null)),reserved=Array.from({length:size},()=>Array(size).fill(false));
+    const set=(row,col,value,isReserved=true)=>{if(row>=0&&row<size&&col>=0&&col<size){modules[row][col]=Boolean(value);if(isReserved)reserved[row][col]=true;}};
+    const finder=(row,col)=>{for(let r=-1;r<=7;r++)for(let c=-1;c<=7;c++){const inside=r>=0&&r<=6&&c>=0&&c<=6;const dark=inside&&(r===0||r===6||c===0||c===6||(r>=2&&r<=4&&c>=2&&c<=4));set(row+r,col+c,dark);}};
+    finder(0,0);finder(0,size-7);finder(size-7,0);
+    for(let i=8;i<size-8;i++){set(6,i,i%2===0);set(i,6,i%2===0);}
+    for(let r=-2;r<=2;r++)for(let c=-2;c<=2;c++)set(30+r,30+c,Math.max(Math.abs(r),Math.abs(c))!==1);
+    for(let i=0;i<9;i++){if(i!==6){set(8,i,false);set(i,8,false);}}for(let i=size-8;i<size;i++){set(8,i,false);set(i,8,false);}set(4*version+9,8,true);
+    let bitIndex=0,upward=true;
+    for(let col=size-1;col>0;col-=2){if(col===6)col--;for(let offset=0;offset<size;offset++){const row=upward?size-1-offset:offset;for(let c=0;c<2;c++){const currentCol=col-c;if(!reserved[row][currentCol]){const bit=stream[bitIndex++]||0;modules[row][currentCol]=Boolean(bit^(((row+currentCol)&1)===0));}}}upward=!upward;}
+    let format=(1<<3)|0,remainder=format;
+    for(let i=0;i<10;i++)remainder=(remainder<<1)^(((remainder>>>9)&1)?0x537:0);
+    const formatBits=((format<<10)|remainder)^0x5412;
+    for(let i=0;i<15;i++){const bit=((formatBits>>>i)&1)!==0;
+      if(i<6)set(i,8,bit);else if(i<8)set(i+1,8,bit);else set(size-15+i,8,bit);
+      if(i<8)set(8,size-i-1,bit);else if(i<9)set(8,15-i,bit);else set(8,15-i-1,bit);
+    }
+    set(size-8,8,true);
+    const scale=5,quiet=4,canvas=document.createElement("canvas");canvas.width=canvas.height=(size+quiet*2)*scale;
+    const ctx=canvas.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#111";
+    modules.forEach((row,r)=>row.forEach((dark,c)=>{if(dark)ctx.fillRect((c+quiet)*scale,(r+quiet)*scale,scale,scale);}));
+    return canvas.toDataURL("image/png");
+  }
+  const slugify=(value)=>{
+    const source=String(value||"nice-business").trim(),ascii=source.normalize("NFKD").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,24);
+    let hash=2166136261;for(const character of source){hash^=character.charCodeAt(0);hash=Math.imul(hash,16777619);}
+    return `${ascii||"nice"}-${(hash>>>0).toString(36)}`;
+  };
+  function publicPageUrl(slug){
+    const url=new URL(location.href);url.search="";url.searchParams.set("page",slug);url.hash="published";return url.toString();
+  }
+  function publishChecks(){
+    const p=state.businessProfile,meta={title:$("#pageTitle").value.trim(),description:$("#pageDescription").value.trim()};
+    return [
+      ["업체명 입력",Boolean(p.businessName)],["대표 이미지",Boolean(imageSrc(p.heroImage))],["소개 문구",Boolean(p.tagline||p.description)],
+      ["연락 수단",Boolean(p.phone||state.actionLinks.some(x=>x.url))],["행동 버튼",Boolean(state.actionLinks.some(x=>x.url))],
+      ["주소 또는 서비스 지역",Boolean(p.address||p.serviceArea)],["게시물 1개 이상",state.websitePosts.some(x=>x.isPublic)],
+      ["검색 제목과 설명",Boolean(meta.title&&meta.description)]
+    ];
+  }
+  function renderPublishChecklist(){
+    const checks=publishChecks(),missing=checks.filter(x=>!x[1]);
+    $("#publishChecklist").innerHTML=checks.map(([label,ok])=>`<div class="checklist-item ${ok?"complete":"missing"}"><i>${ok?"✓":"!"}</i><span>${label}</span></div>`).join("");
+    $("#publishWarning").textContent=missing.length?`${missing.length}개 항목이 비어 있습니다. 보완을 권장하지만 확인 후 발행할 수 있습니다.`:"모든 필수 권장 항목을 확인했습니다.";
+    $("#publishDespiteMissing").closest("label").hidden=!missing.length;
+    $("#confirmPagePublish").textContent=missing.length?"누락 확인 후 발행":"발행하기";
+  }
+  function updatePublicUrlPreview(){
+    const slug=slugify($("#pageTitle").value||state.businessProfile.businessName);$("#pageUrlPreview").value=publicPageUrl(slug);
+  }
+  $("#openPublish").onclick=()=>{
+    const p=state.businessProfile,meta=state.settings.publishMeta;
+    $("#pageTitle").value=meta.title||`${p.businessName||"내 사업"} | ${p.tagline||"공식 페이지"}`;
+    $("#pageDescription").value=meta.description||p.description.slice(0,160);$("#pageKeywords").value=meta.keywords||[p.industry,p.businessName].filter(Boolean).join(", ");
+    $("#pageVisibility").value=meta.visibility||"public";$("#pagePublishImage").value=meta.image||"hero";$("#publishDespiteMissing").checked=false;
+    updatePublicUrlPreview();renderPublishChecklist();$("#pagePublishModal").hidden=false;
+  };
+  ["pageTitle","pageDescription"].forEach(name=>$(`#${name}`).addEventListener("input",()=>{updatePublicUrlPreview();renderPublishChecklist();}));
+  $("#confirmPagePublish").onclick=()=>{
+    const missing=publishChecks().filter(x=>!x[1]);if(missing.length&&!$("#publishDespiteMissing").checked){toast("누락 항목을 확인하거나 체크 후 발행해 주세요.");return;}
+    state.settings.publishMeta={title:$("#pageTitle").value.trim(),description:$("#pageDescription").value.trim(),keywords:$("#pageKeywords").value.trim(),visibility:$("#pageVisibility").value,slug:slugify($("#pageTitle").value||state.businessProfile.businessName),publishedAt:new Date().toISOString(),image:$("#pagePublishImage").value};
+    Data.save(state);const publishedUrl=publicPageUrl(state.settings.publishMeta.slug);
+    try{
+      const qr=generateQrDataUrl(publishedUrl);
+      $("#pagePublishModal").hidden=true;$("#publishedUrlText").textContent=publishedUrl;$("#openPublishedPage").href=publishedUrl;$("#publishedQr").src=qr;$("#publishCompleteModal").hidden=false;
+    }catch(error){toast(error.message||"QR 코드를 만들지 못했습니다.");}
+  };
+  $("#copyPublishedLink").onclick=async()=>toast(await copyText($("#publishedUrlText").textContent)?"공개 페이지 링크를 복사했습니다.":"링크 복사에 실패했습니다.");
+  $("#continueEditing").onclick=()=>{$("#publishCompleteModal").hidden=true;location.hash="business";};
   $("#exportData").onclick=()=>{
     const blob=new Blob([JSON.stringify(Data.serialize(state),null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");
     a.href=url;a.download=`nice-ph-backup-${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("JSON 백업 파일을 만들었습니다.");
@@ -468,11 +621,15 @@
   $("#commentList").addEventListener("click",async e=>{const copy=e.target.closest("[data-comment-copy]"),status=e.target.closest("[data-comment-status]");if(copy){const c=state.comments.find(x=>x.id===copy.dataset.commentCopy);toast(await copyText(c.aiDraft)?"추천 답변을 복사했습니다.":"복사에 실패했습니다.");}if(status){const c=state.comments.find(x=>x.id===status.dataset.commentStatus);c.answered=!c.answered;scheduleSave();renderComments();}});
 
   function applyRoute() {
-    const requested=(location.hash||"#business").slice(1),route=requested==="builder"?"business":requested,preview=route==="preview";
+    const requested=(location.hash||"#business").slice(1),route=requested==="builder"?"business":requested,preview=route==="preview",published=route==="published";
     document.body.classList.toggle("preview-mode",preview);$("#completionBar").hidden=!preview;
-    $("#businessView").hidden=!["business","preview"].includes(route);$("#promotionView").hidden=route!=="promotion";$("#postsView").hidden=route!=="posts";
+    document.body.classList.toggle("published-mode",published);$("#publicHeader").hidden=!published;
+    $("#businessView").hidden=!["business","preview","published"].includes(route);$("#promotionView").hidden=route!=="promotion";$("#postsView").hidden=route!=="posts";
     $$("[data-route]").forEach(x=>x.classList.toggle("active",x.dataset.route===route));
-    if(!["business","promotion","posts","preview"].includes(route)){location.hash="business";return;}
+    if(!["business","promotion","posts","preview","published"].includes(route)){location.hash="business";return;}
+    const meta=state.settings.publishMeta||{};
+    document.title=published&&meta.title?meta.title:"NICE PH | 내 사업을 이해하는 홍보 공간";
+    $('meta[name="description"]').content=published&&meta.description?meta.description:"사업 정보와 사진으로 랜딩페이지와 채널별 홍보글을 만드는 NICE Promotion Hub";
     if(requested==="builder")setTimeout(()=>$("#builder").scrollIntoView({behavior:"smooth"}),0);
     else if(route==="business")setTimeout(()=>{if(location.hash==="#business")window.scrollTo(0,0)},0);
   }

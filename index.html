@@ -19,11 +19,15 @@
 
   <div class="completion-bar" id="completionBar" hidden>
     <a class="brand compact" href="#preview"><span class="brand-mark">N</span><strong>NICE PH</strong></a>
+    <span class="preview-status"><i></i> 관리자 미리보기 · 아직 공개되지 않았습니다</span>
     <div class="completion-actions">
-      <button type="button" class="button secondary" id="copyPageLink">페이지 링크 복사</button>
       <button type="button" class="button" id="backToEditor">편집으로 돌아가기</button>
     </div>
   </div>
+  <header class="public-header" id="publicHeader" hidden>
+    <a class="public-brand" href="#publicTop"><span class="footer-logo-mark" id="publicLogoMark">N</span><strong id="publicBrandName">NICE PH</strong></a>
+    <nav aria-label="고객용 메뉴"><a href="#previewAbout">소개</a><a href="#previewProductsSection">상품·서비스</a><a href="#previewNewsSection">소식</a><a href="#previewInfoSection">이용 안내</a></nav>
+  </header>
 
   <main>
     <section class="admin-view business-view" id="businessView">
@@ -41,8 +45,10 @@
         <header class="section-heading">
           <div><p class="eyebrow">STEP 01 · 사업 정보 입력</p><h2>내 사업을 알려주세요</h2><p>입력 내용은 즉시 오른쪽 미리보기에 반영되고 브라우저에 자동 저장됩니다.</p></div>
           <div class="utility-actions">
-            <button type="button" class="button" id="viewCompletedPage">완성 페이지 보기</button>
-            <button type="button" class="button secondary" id="aiInterview" disabled>AI 인터뷰 <small>준비중</small></button>
+            <button type="button" class="button secondary" id="viewCompletedPage">미리보기</button>
+            <button type="button" class="button secondary" id="saveDraft">임시저장</button>
+            <button type="button" class="button" id="openPublish">발행하기</button>
+            <button type="button" class="text-button" id="aiInterview">AI 인터뷰 체험</button>
             <button type="button" class="text-button" id="loadSample">NICE 예시</button>
             <button type="button" class="text-button" id="exportData">JSON 백업</button>
             <button type="button" class="text-button" id="importData">JSON 불러오기</button>
@@ -71,6 +77,8 @@
               <label class="upload-field"><span>서브 이미지 <small>(여러 장)</small></span><span class="upload-box">＋ <strong>사진 여러 장 선택</strong><small>각 이미지의 표시 방식을 선택할 수 있습니다.</small></span><input type="file" id="subImageFiles" accept="image/*" multiple></label>
               <div class="image-list" id="subImageList"></div>
               <p class="status-note" id="imageOptimizationStatus" role="status">업로드 이미지는 자동으로 최적화됩니다.</p>
+              <label class="upload-field"><span>업체 로고 <small>(선택)</small></span><span class="upload-box">＋ <strong>로고 선택</strong><small>미등록 시 업체명 첫 글자로 자동 생성</small></span><input type="file" id="logoImageFile" accept="image/*"></label>
+              <div class="image-control" id="logoImageControl" hidden><img id="logoThumb" alt="업체 로고"><button type="button" data-remove-image="logo">삭제</button></div>
             </section>
 
             <section class="form-section">
@@ -90,6 +98,9 @@
               <div class="field-grid two">
                 <label class="field"><span>주소</span><input name="address" placeholder="서울시 중구 ..."></label>
                 <label class="field"><span>전화번호</span><input name="phone" type="tel" placeholder="02-1234-5678"></label>
+                <label class="field"><span>서비스 지역</span><input name="serviceArea" placeholder="예: 서울 전 지역 / 전국 택배"></label>
+                <label class="field"><span>대표자명</span><input name="representativeName" placeholder="예: 김나이스"></label>
+                <label class="field"><span>사업자등록번호</span><input name="businessNumber" placeholder="000-00-00000"></label>
               </div>
               <div class="hours-editor">
                 <span>영업시간</span>
@@ -113,17 +124,24 @@
             <div class="preview-toolbar"><strong>실시간 미리보기</strong><small id="saveStatus">자동 저장됨</small></div>
             <article class="landing-preview" id="landingPreview">
               <section class="preview-hero">
-                <div class="preview-hero-image placeholder" id="previewHeroImage"></div><div class="hero-shade"></div>
+                <span id="publicTop"></span><div class="preview-hero-image placeholder" id="previewHeroImage"></div><div class="hero-shade"></div>
                 <div class="preview-hero-content"><span id="previewIndustry">업종을 선택해 주세요</span><h2 id="previewName">상호명을 입력해 주세요</h2><p id="previewTagline">사업의 매력을 한 문장으로 소개해 보세요.</p><div class="hero-actions" id="heroActions"></div></div>
               </section>
-              <section class="preview-section"><p class="preview-kicker">ABOUT US</p><h3>우리 사업을 소개합니다</h3><p class="preline" id="previewDescription"></p></section>
+              <section class="preview-section" id="previewAbout"><p class="preview-kicker">ABOUT US</p><h3>우리 사업을 소개합니다</h3><p class="preline" id="previewDescription"></p></section>
               <section class="preview-gallery" id="previewGallery" hidden></section>
               <section class="preview-section" id="previewProductsSection"><p class="preview-kicker">PRODUCTS &amp; SERVICES</p><h3>주요 상품 및 서비스</h3><div class="product-cards" id="previewProductCards"></div></section>
               <section class="preview-section" id="previewStrengthsSection"><p class="preview-kicker">WHY CHOOSE US</p><h3>우리의 특별한 강점</h3><div class="strength-list" id="previewStrengths"></div></section>
               <section class="preview-section news-section" id="previewNewsSection"><p class="preview-kicker">NEWS</p><div class="title-row"><h3>새로운 소식</h3><button type="button" class="text-button" id="openBoard">소식 더 보기 →</button></div><div class="post-cards" id="previewPostCards"></div></section>
               <section class="preview-section" id="previewInfoSection"><p class="preview-kicker">INFORMATION</p><h3>이용 안내</h3><div class="info-list" id="previewInfo"></div></section>
               <section class="preview-cta" id="previewCtaSection" hidden><p>궁금한 점이 있으신가요?</p><h3>편하게 문의해 주세요.</h3><div class="cta-buttons" id="previewCtas"></div></section>
-              <footer class="preview-footer"><strong id="previewFooterName">NICE PH</strong><span>당신의 사업을 더 잘 알리는 공간</span></footer>
+              <footer class="customer-footer">
+                <div class="footer-main">
+                  <div class="footer-identity"><div class="footer-logo" id="previewFooterLogo"><span class="footer-logo-mark">N</span></div><div><strong id="previewFooterName">NICE PH</strong><p id="previewFooterTagline">당신의 사업을 더 잘 알리는 공간</p></div></div>
+                  <div class="footer-actions" id="previewFooterActions"></div>
+                </div>
+                <div class="footer-details" id="previewFooterDetails"></div>
+                <div class="footer-legal"><span id="previewBusinessInfo"></span><span id="previewCopyright">© 2026 NICE PH. All rights reserved.</span></div>
+              </footer>
               <div class="mobile-contact" id="mobileContact" hidden></div>
             </article>
           </aside>
@@ -201,6 +219,9 @@
     <div class="modal" id="boardModal" hidden><div class="modal-card wide"><button class="modal-close" data-close-modal="boardModal" aria-label="닫기">×</button><p class="eyebrow">ALL NEWS</p><h2>전체 소식</h2><div class="category-tabs" id="boardTabs"></div><div class="post-cards all-posts" id="boardList"></div></div></div>
     <div class="modal" id="postDetailModal" hidden><article class="modal-card post-detail"><button class="modal-close" data-close-modal="postDetailModal" aria-label="닫기">×</button><div id="postDetail"></div></article></div>
     <div class="modal" id="publishModal" hidden><div class="modal-card"><button class="modal-close" data-close-modal="publishModal" aria-label="닫기">×</button><p class="eyebrow">PUBLISH TO WEBSITE</p><h2>홈페이지 게시판에 등록</h2><div class="field-grid two"><label class="field"><span>카테고리</span><select id="publishCategory"></select></label><label class="field"><span>게시일</span><input id="publishDate" type="date"></label></div><label class="field"><span>제목</span><input id="publishTitle"></label><label class="field"><span>대표 이미지</span><select id="publishPhoto"><option value="">사진 없음</option></select></label><label class="check"><input id="publishPublic" type="checkbox" checked><span>공개</span></label><div class="field-grid two"><label class="field"><span>행동 버튼명</span><input id="publishButtonLabel"></label><label class="field"><span>연결 링크</span><input id="publishButtonUrl"></label></div><button type="button" class="button full" id="confirmPublish">게시판에 등록</button></div></div>
+    <div class="modal" id="interviewModal" hidden><div class="modal-card interview-modal-card"><button class="modal-close" data-close-modal="interviewModal" aria-label="닫기">×</button><p class="eyebrow">GUIDED INTERVIEW</p><h2>AI 인터뷰 체험</h2><p class="notice">실제 AI가 아닌 규칙 기반 인터뷰입니다. 다섯 질문의 답을 기존 입력란에 정리해 드립니다.</p><div class="interview-step" id="interviewStep"></div><div class="interview-navigation"><button type="button" class="button secondary" id="interviewPrev">이전</button><span id="interviewCounter">1 / 5</span><button type="button" class="button" id="interviewNext">다음</button></div></div></div>
+    <div class="modal" id="pagePublishModal" hidden><div class="modal-card wide publish-page-modal"><button class="modal-close" data-close-modal="pagePublishModal" aria-label="닫기">×</button><p class="eyebrow">PUBLISH PAGE</p><h2>사업 페이지 발행</h2><div class="publish-layout"><div><div class="field-grid two"><label class="field"><span>페이지 제목</span><input id="pageTitle" maxlength="70"></label><label class="field"><span>핵심 키워드</span><input id="pageKeywords" placeholder="쉼표로 구분"></label></div><label class="field"><span>검색 설명</span><textarea id="pageDescription" rows="3" maxlength="160"></textarea></label><div class="field-grid two"><label class="field"><span>대표 이미지</span><select id="pagePublishImage"><option value="hero">현재 대표 이미지</option><option value="">이미지 없음</option></select></label><label class="field"><span>공개 범위</span><select id="pageVisibility"><option value="public">전체 공개</option><option value="unlisted">링크를 아는 사람만</option><option value="private">비공개</option></select></label></div><label class="field"><span>공개 주소 미리보기</span><input id="pageUrlPreview" readonly></label></div><aside class="publish-checklist"><h3>발행 전 체크리스트</h3><div id="publishChecklist"></div><p id="publishWarning" class="status-note"></p></aside></div><label class="check"><input id="publishDespiteMissing" type="checkbox"><span>누락 항목을 확인했으며 현재 내용으로 발행합니다.</span></label><button type="button" class="button full" id="confirmPagePublish">발행하기</button></div></div>
+    <div class="modal" id="publishCompleteModal" hidden><div class="modal-card publish-complete"><p class="eyebrow">PUBLISHED</p><h2>사업 페이지를 발행했습니다</h2><p id="publishedUrlText" class="published-url"></p><div class="qr-wrap"><img id="publishedQr" alt="공개 페이지 QR 코드"><small>QR 코드는 브라우저에서 안전하게 생성했습니다.</small></div><div class="publish-complete-actions"><a class="button" id="openPublishedPage" target="_blank" rel="noopener">공개 페이지 열기</a><button type="button" class="button secondary" id="copyPublishedLink">링크 복사</button><button type="button" class="button secondary" id="continueEditing">계속 수정</button></div></div></div>
   </main>
   <footer class="site-footer"><span>© 2026 NICE PH</span><span>복잡한 홍보 업무를 단순하게.</span></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
