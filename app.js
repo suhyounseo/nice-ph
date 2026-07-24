@@ -53,6 +53,27 @@
     link:'<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"/>'
   };
   const iconSvg = (type) => `<svg class="svg-icon" viewBox="0 0 24 24" aria-hidden="true">${ICONS[type] || ICONS.link}</svg>`;
+  const brandIcon = (type) => {
+    const icons = {
+      kakao:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#FEE500"/><path d="M18 8.2c-6.1 0-11 3.8-11 8.5 0 3 2 5.6 5 7.1l-1 4.2 4.9-2.7c.7.1 1.4.2 2.1.2 6.1 0 11-3.8 11-8.6 0-4.7-4.9-8.5-11-8.5Z" fill="#191919"/></svg>`,
+      kakaochannel:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#FEE500"/><path d="M18 8.2c-6.1 0-11 3.8-11 8.5 0 3 2 5.6 5 7.1l-1 4.2 4.9-2.7c.7.1 1.4.2 2.1.2 6.1 0 11-3.8 11-8.6 0-4.7-4.9-8.5-11-8.5Z" fill="#191919"/><path d="M18 12v9M13.5 16.5h9" stroke="#FEE500" stroke-width="2" stroke-linecap="round"/></svg>`,
+      instagram:`<svg viewBox="0 0 36 36" aria-hidden="true"><defs><radialGradient id="igG" cx="30%" cy="105%" r="120%"><stop offset="0" stop-color="#FFD600"/><stop offset=".35" stop-color="#FF7A00"/><stop offset=".62" stop-color="#FF0169"/><stop offset=".82" stop-color="#D300C5"/><stop offset="1" stop-color="#7638FA"/></radialGradient></defs><rect width="36" height="36" rx="11" fill="url(#igG)"/><rect x="9" y="9" width="18" height="18" rx="6" fill="none" stroke="#fff" stroke-width="2.2"/><circle cx="18" cy="18" r="4.4" fill="none" stroke="#fff" stroke-width="2.2"/><circle cx="24.2" cy="11.8" r="1.4" fill="#fff"/></svg>`,
+      youtube:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#FF0033"/><path d="M27.7 13.1c-.3-1.2-1.3-2.2-2.5-2.5-2.2-.6-12.2-.6-14.4 0-1.2.3-2.2 1.3-2.5 2.5-.6 2.2-.6 7.6 0 9.8.3 1.2 1.3 2.2 2.5 2.5 2.2.6 12.2.6 14.4 0 1.2-.3 2.2-1.3 2.5-2.5.6-2.2.6-7.6 0-9.8Z" fill="#fff"/><path d="m16 14.5 6 3.5-6 3.5v-7Z" fill="#FF0033"/></svg>`,
+      smartstore:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#03C75A"/><path d="M11 10h14l-1.1 16H12.1L11 10Z" fill="#fff"/><path d="M14.5 11V9.3a3.5 3.5 0 0 1 7 0V11" fill="none" stroke="#03C75A" stroke-width="2"/><path d="M15 22v-8l7 8v-8" fill="none" stroke="#03C75A" stroke-width="2.2" stroke-linejoin="round"/></svg>`,
+      navermap:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#03C75A"/><path d="M10 26V10l7.5 10.3V10H26v16h-7.5L11 15.7V26h-1Z" fill="#fff"/></svg>`,
+      naverbooking:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#03C75A"/><rect x="9" y="10" width="18" height="17" rx="3" fill="#fff"/><path d="M13 8v5M23 8v5M9 15h18" stroke="#03C75A" stroke-width="2"/><path d="m14 21 2.5 2.5L22 18" fill="none" stroke="#03C75A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      blog:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#03C75A"/><path d="M10 9h12l4 4v14H10V9Z" fill="#fff"/><path d="M22 9v5h5" fill="#D7F5E3"/><path d="M14 16h8M14 20h8M14 24h5" stroke="#03C75A" stroke-width="2" stroke-linecap="round"/></svg>`,
+      showroom:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#E94186"/><path d="M8 16 18 8l10 8v12H8V16Z" fill="#fff"/><path d="M14 28v-8h8v8" fill="#FAD6E5"/><circle cx="18" cy="15" r="2.2" fill="#E94186"/></svg>`,
+      ownmall:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#4A4039"/><path d="M8 14h20l-2-6H10l-2 6Z" fill="#fff"/><path d="M10 14v13h16V14M15 27v-8h6v8" fill="none" stroke="#fff" stroke-width="2"/></svg>`
+    };
+    return icons[type] || `<span class="generic-action-icon">${iconSvg(type)}</span>`;
+  };
+  const ACTION_HINTS = {
+    phone:"전화로 바로 문의",sms:"문자로 간편 문의",email:"이메일 보내기",kakao:"카카오톡으로 상담",kakaochannel:"채널에서 상담",
+    navermap:"네이버 정보 보기",map:"매장 위치 확인",naverbooking:"예약 화면 열기",smartstore:"상품 보러가기",instagram:"새 소식과 상품 보기",
+    threads:"이야기 보기",facebook:"페이지 방문",x:"계정 방문",youtube:"영상 보기",blog:"블로그 방문",showroom:"온라인 쇼룸 보기",ownmall:"홈페이지 방문",
+    inquiry:"문의서 작성",coupang:"상품 보러가기",link:"자세히 보기"
+  };
   const CHANNELS = {
     instagram:{name:"Instagram",url:"https://www.instagram.com/"},
     threads:{name:"Threads",url:"https://www.threads.net/"},
@@ -246,7 +267,7 @@
     const options=Object.entries(ACTION_TYPES).map(([key,[label]])=>`<option value="${key}">${label}</option>`).join("");
     $("#actionFields").innerHTML=state.actionLinks.map((a,i)=>`
       <article class="repeat-card action-editor-card ${a.isPrimary?"is-primary":""}" data-action="${i}">
-        <header><strong><span class="brand-icon">${iconSvg(a.type)}</span> ${a.isPrimary?"대표 버튼":"보조 버튼"} ${String(i+1).padStart(2,"0")}</strong><div class="card-tools"><button type="button" class="icon-button" data-action-move="up" title="위로">↑</button><button type="button" class="icon-button" data-action-move="down" title="아래로">↓</button><button type="button" class="icon-button danger" data-action-delete title="삭제">×</button></div></header>
+        <header><strong><span class="brand-icon brand-${escapeHtml(a.type)}">${brandIcon(a.type)}</span> ${a.isPrimary?"대표 버튼":"보조 버튼"} ${String(i+1).padStart(2,"0")}</strong><div class="card-tools"><button type="button" class="icon-button" data-action-move="up" title="위로">↑</button><button type="button" class="icon-button" data-action-move="down" title="아래로">↓</button><button type="button" class="icon-button danger" data-action-delete title="삭제">×</button></div></header>
         <div class="action-type-row"><label class="field"><span>버튼 종류</span><select data-action-field="type">${options.replace(`value="${a.type}"`,`value="${a.type}" selected`)}</select></label><label class="field"><span>버튼명</span><input data-action-field="label" value="${escapeHtml(a.label)}"></label></div>
         <label class="field"><span>URL 또는 전화번호</span><input data-action-field="url" value="${escapeHtml(a.url)}" placeholder="https:// 또는 전화번호"></label>
         <div class="action-card-options"><label class="check"><input type="radio" name="primaryAction" data-action-primary ${a.isPrimary?"checked":""}><span>대표 버튼으로 설정</span></label><label class="check new-window"><input type="checkbox" data-action-field="newWindow" ${a.newWindow?"checked":""}><span>새 창에서 열기</span></label></div>
@@ -269,10 +290,11 @@
     $("#heroImageFit").value=imageFit(p.heroImage,"cover");
     $("#subImageList").innerHTML=p.subImages.map((img,i)=>`<div class="image-item" data-sub-image="${i}"><img src="${imageSrc(img)}" alt="서브 이미지 ${i+1}"><select data-sub-fit><option value="contain" ${imageFit(img)==="contain"?"selected":""}>전체 이미지 보기</option><option value="original" ${imageFit(img)==="original"?"selected":""}>원본 비율</option><option value="cover" ${imageFit(img)==="cover"?"selected":""}>화면 채우기</option></select><button type="button" data-sub-delete>삭제</button></div>`).join("");
   }
-  function actionButton(a) {
+  function actionButton(a, primary = false) {
     const url=safeUrl(a.url,a.type); if(!url) return "";
     const target=a.newWindow && !/^(tel:|sms:|mailto:)/.test(url)?' target="_blank" rel="noopener"':"";
-    return `<a class="action-button channel-${escapeHtml(a.type)}" data-action-type="${escapeHtml(a.type)}" href="${escapeHtml(url)}"${target}><span class="brand-icon">${iconSvg(a.type)}</span><span>${escapeHtml(a.label)}</span></a>`;
+    const hint=ACTION_HINTS[a.type] || "바로 연결";
+    return `<a class="action-button channel-${escapeHtml(a.type)}${primary?" is-primary":""}" data-action-type="${escapeHtml(a.type)}" href="${escapeHtml(url)}"${target}><span class="brand-icon brand-${escapeHtml(a.type)}">${brandIcon(a.type)}</span><span class="action-copy"><strong>${escapeHtml(a.label)}</strong><small>${escapeHtml(hint)}</small></span><span class="action-arrow" aria-hidden="true">↗</span></a>`;
   }
   function formatHours() {
     const p=state.businessProfile; if(!p.openTime && !p.closeTime && !p.hoursNote) return "";
@@ -311,10 +333,12 @@
     const info=[["주소",p.address],["영업시간",formatHours()],["전화",p.phone]].filter(x=>x[1]);
     $("#previewInfoSection").hidden=!info.length; $("#previewInfo").innerHTML=info.map(([k,v])=>`<div class="info-row"><strong>${k}</strong><span>${escapeHtml(v)}</span></div>`).join("");
     const actions=state.actionLinks.filter(x=>x.label&&x.url).slice(0,5);
-    const primary=actions.find(x=>x.isPrimary)||actions[0], secondary=actions.filter(x=>x!==primary).slice(0,4);
-    $("#previewCtaSection").hidden=!secondary.length; $("#previewCtas").innerHTML=secondary.map(actionButton).join("");
+    const primary=actions.find(x=>x.isPrimary)||actions[0];
+    const ordered=primary?[primary,...actions.filter(x=>x!==primary)]:actions;
+    $("#previewCtaSection").hidden=!ordered.length;
+    $("#previewCtas").innerHTML=ordered.map((item,index)=>actionButton(item,index===0)).join("");
+    $("#actionCountBadge").textContent=`${ordered.length}개의 연결`;
     $("#previewFooterActions").innerHTML="";
-    $("#heroActions").innerHTML=primary?actionButton(primary):"";
     $("#mobileContact").hidden=true; $("#mobileContact").innerHTML="";
     const posts=publicPosts(); $("#previewNewsSection").hidden=!posts.length; $("#previewPostCards").innerHTML=posts.slice(0,3).map(postCard).join("");
     const footerDetails=[["ADDRESS",p.address||p.serviceArea],["PHONE",p.phone],["OPENING HOURS",formatHours()]].filter(x=>x[1]);
