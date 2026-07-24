@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="사업 페이지 제작부터 홍보 콘텐츠 작성, 채널별 배포 준비와 고객 연결까지 관리하는 소상공인 통합 홍보 플랫폼입니다.">
+  <title>프로모링크 | 사업과 고객을 연결하는 통합 홍보 플랫폼</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header" id="adminHeader">
+    <a class="brand" href="#business" aria-label="프로모링크"><span class="brand-mark">P</span><span><strong>프로모링크</strong><small>PromoLink</small><em>사업과 고객을 연결하는 통합 홍보 플랫폼</em></span></a>
+    <nav class="header-nav" aria-label="관리자 메뉴">
+      <a href="#business" data-route="business">내 사업 페이지</a>
+      <a href="#promotion" data-route="promotion">홍보 만들기</a>
+      <a href="#posts" data-route="posts">콘텐츠 관리</a>
+      <button type="button" class="nav-settings" id="openSettings" aria-label="설정 열기">설정</button>
+    </nav>
+  </header>
+
+  <div class="completion-bar" id="completionBar" hidden>
+    <a class="brand compact" href="#preview"><span class="brand-mark">P</span><strong>프로모링크</strong></a>
+    <span class="preview-status"><i></i> 관리자 미리보기 · 아직 공개되지 않았습니다</span>
+    <div class="completion-actions">
+      <button type="button" class="button" id="backToEditor">편집으로 돌아가기</button>
+    </div>
+  </div>
+  <header class="public-header" id="publicHeader" hidden>
+    <a class="public-brand" href="#publicTop"><span class="footer-logo-mark" id="publicLogoMark">P</span><strong id="publicBrandName">프로모링크</strong></a>
+    <nav aria-label="고객용 메뉴"><a href="#previewAbout">소개</a><a href="#previewProductsSection">상품·서비스</a><a href="#previewNewsSection">소식</a><a href="#previewInfoSection">이용 안내</a></nav>
+  </header>
+
+  <main>
+    <section class="admin-view business-view" id="businessView">
+      <section class="intro">
+        <div>
+          <p class="eyebrow">Small business, beautifully introduced.</p>
+          <h1>내 사업을 이해하는<br><em>홍보 공간</em></h1>
+          <p>사업 정보를 한 번 입력하면 고객에게 보여줄 소개 페이지와 채널별 홍보 콘텐츠를 쉽고 빠르게 완성할 수 있습니다.</p>
+          <div class="hero-buttons"><a class="button" href="#builder">내 사업 페이지 만들기</a><a class="button secondary" href="#preview">샘플 페이지 보기</a></div>
+        </div>
+        <div class="hero-phone" aria-label="완성될 사업 페이지 예시">
+          <div class="phone-speaker"></div>
+          <div class="phone-hero"><span>WOMEN'S FASHION</span><strong>NICE</strong><p>당신의 품격과 가치 상승의 동반자</p></div>
+          <div class="phone-actions"><span>💬 상담하기</span><span>☎ 전화하기</span></div>
+          <div class="phone-copy"><b>우리 사업을 소개합니다</b><i></i><i></i><i class="short"></i></div>
+        </div>
+      </section>
+
+      <section class="value-section" aria-label="프로모링크 핵심 기능">
+        <article><span>01</span><div class="value-icon">▤</div><h2>사업 소개 페이지</h2><p>사업 정보와 사진을 입력하면 고객에게 보여줄 모바일 소개 페이지를 만듭니다.</p></article>
+        <article><span>02</span><div class="value-icon">✦</div><h2>채널별 홍보 콘텐츠</h2><p>Instagram, Threads, 블로그 등 채널에 맞는 홍보 문구를 준비합니다.</p></article>
+        <article><span>03</span><div class="value-icon">↗</div><h2>고객 행동 연결</h2><p>전화, 카카오톡, 예약, 길찾기로 고객의 다음 행동을 바로 연결합니다.</p></article>
+      </section>
+
+      <section class="builder" id="builder">
+        <header class="section-heading">
+          <div><p class="eyebrow">BUILD YOUR BUSINESS PAGE</p><h2>5분 만에 사업 페이지를 완성하세요</h2><p>한 단계씩 입력하면 오른쪽 고객 화면이 바로 완성됩니다.</p></div>
+          <div class="utility-actions">
+            <button type="button" class="button secondary" id="viewCompletedPage">미리보기</button>
+            <button type="button" class="button" id="openPublish">발행하기</button>
+          </div>
+        </header>
+        <div class="progress-card"><div><span>소개 페이지 완성도</span><strong id="progressPercent">0% 완료</strong></div><div class="progress-track"><i id="progressBar"></i></div><small id="progressHint">업종과 상호명을 입력하면 시작됩니다.</small></div>
+        <nav class="editor-stepper" id="editorStepper" aria-label="사업 페이지 만들기 단계">
+          <button type="button" class="active" data-step-target="1"><b>1</b><span>사업 기본정보</span></button>
+          <button type="button" data-step-target="2"><b>2</b><span>사업 소개</span></button>
+          <button type="button" data-step-target="3"><b>3</b><span>서비스·상품</span></button>
+          <button type="button" data-step-target="4"><b>4</b><span>고객 연결</span></button>
+          <button type="button" data-step-target="5"><b>5</b><span>미리보기</span></button>
+        </nav>
+
+        <div class="workspace">
+          <form class="editor" id="businessForm">
+            <section class="form-section" data-editor-step="1">
+              <div class="form-title"><span>01</span><div><h3>어떤 사업을 운영하시나요?</h3><p>업종을 고르면 기본 소개 문구를 제안합니다.</p></div></div>
+              <fieldset class="choice-grid" id="industryOptions"><legend class="sr-only">업종</legend></fieldset>
+            </section>
+
+            <section class="form-section" data-editor-step="2" hidden>
+              <div class="form-title"><span>02</span><div><h3>사업의 첫인상을 적어주세요</h3><p>고객이 가장 먼저 보게 되는 정보입니다.</p></div></div>
+              <button type="button" class="interview-entry" id="aiInterview"><span>✦</span><strong>질문에 답하며 소개 작성하기</strong><small>AI 인터뷰 체험 · 규칙 기반</small></button>
+              <div class="field-grid two">
+                <label class="field"><span>상호명 <b>*</b></span><input name="businessName" maxlength="40" placeholder="예: NICE"></label>
+                <label class="field"><span>한 줄 소개</span><input name="tagline" maxlength="90" placeholder="사업의 매력을 한 문장으로"></label>
+              </div>
+              <label class="field"><span>사업 소개</span><textarea name="description" rows="5" placeholder="경험, 전문 분야, 고객에게 전하고 싶은 이야기를 적어주세요."></textarea></label>
+              <label class="upload-field"><span>대표 이미지</span><span class="upload-box">＋ <strong>사진 선택</strong><small>긴 변 1600px 이하로 자동 최적화</small></span><input type="file" id="heroImageFile" accept="image/*"></label>
+              <div class="image-control" id="heroImageControl" hidden><img id="heroThumb" alt=""><select id="heroImageFit"><option value="cover">화면 채우기</option><option value="contain">전체 이미지 보기</option><option value="original">원본 비율</option></select><button type="button" data-remove-image="hero">삭제</button></div>
+              <label class="upload-field"><span>서브 이미지 <small>(여러 장)</small></span><span class="upload-box">＋ <strong>사진 여러 장 선택</strong><small>각 이미지의 표시 방식을 선택할 수 있습니다.</small></span><input type="file" id="subImageFiles" accept="image/*" multiple></label>
+              <div class="image-list" id="subImageList"></div>
+              <p class="status-note" id="imageOptimizationStatus" role="status">업로드 이미지는 자동으로 최적화됩니다.</p>
+              <label class="upload-field"><span>업체 로고 <small>(선택)</small></span><span class="upload-box">＋ <strong>로고 선택</strong><small>미등록 시 업체명 첫 글자로 자동 생성</small></span><input type="file" id="logoImageFile" accept="image/*"></label>
+              <div class="image-control" id="logoImageControl" hidden><img id="logoThumb" alt="업체 로고"><button type="button" data-remove-image="logo">삭제</button></div>
+            </section>
+
+            <section class="form-section" data-editor-step="3" hidden>
+              <div class="form-title"><span>03</span><div><h3>주요 상품 또는 서비스</h3><p>필요한 만큼 추가하고 순서를 바꿀 수 있습니다.</p></div></div>
+              <div id="productFields"></div>
+              <button type="button" class="add-button" id="addProduct">＋ 상품 추가</button>
+            </section>
+
+            <section class="form-section" data-editor-step="3" hidden>
+              <div class="form-title"><span>04</span><div><h3>우리 사업의 강점</h3><p>고객이 선택해야 할 이유를 짧게 적어주세요.</p></div></div>
+              <div class="suggestion-chips" id="strengthSuggestions"><button type="button" data-strength-suggestion="오랜 경험">오랜 경험</button><button type="button" data-strength-suggestion="합리적인 가격">합리적인 가격</button><button type="button" data-strength-suggestion="맞춤 서비스">맞춤 서비스</button><button type="button" data-strength-suggestion="빠른 응대">빠른 응대</button></div>
+              <div id="strengthFields"></div>
+              <button type="button" class="add-button" id="addStrength">＋ 강점 추가</button>
+            </section>
+
+            <section class="form-section" data-editor-step="4" hidden>
+              <div class="form-title"><span>05</span><div><h3>이용 안내</h3><p>입력하지 않은 정보는 고객 페이지에 표시하지 않습니다.</p></div></div>
+              <div class="field-grid two">
+                <label class="field"><span>주소</span><input name="address" placeholder="서울시 중구 ..."></label>
+                <label class="field"><span>전화번호</span><input name="phone" type="tel" placeholder="02-1234-5678"></label>
+                <label class="field"><span>서비스 지역</span><input name="serviceArea" placeholder="예: 서울 전 지역 / 전국 택배"></label>
+                <label class="field"><span>대표자명</span><input name="representativeName" placeholder="예: 김나이스"></label>
+                <label class="field"><span>사업자등록번호</span><input name="businessNumber" placeholder="000-00-00000"></label>
+              </div>
+              <div class="hours-editor">
+                <span>영업시간</span>
+                <div class="field-grid two">
+                  <label class="field"><small>오픈</small><input name="openTime" type="time"></label>
+                  <label class="field"><small>마감</small><input name="closeTime" type="time"></label>
+                </div>
+                <label class="check"><input name="closesNextDay" type="checkbox"><span>마감 시간이 다음날 새벽입니다</span></label>
+                <label class="field"><small>추가 안내</small><input name="hoursNote" placeholder="예: 일요일 휴무"></label>
+              </div>
+            </section>
+
+            <section class="form-section" data-editor-step="4" hidden>
+              <div class="form-title"><span>06</span><div><h3>고객 행동 버튼</h3><p>종류를 고르면 아이콘과 기본 이름을 자동으로 제안합니다.</p></div></div>
+              <div class="action-recommendation"><div><strong>업종 추천 조합</strong><p id="actionRecommendationText">업종을 선택하면 고객에게 필요한 버튼을 추천합니다.</p></div><button type="button" class="button secondary" id="applyActionRecommendation">추천 적용</button></div>
+              <div id="actionFields"></div>
+              <button type="button" class="add-button" id="addAction">＋ 연결 버튼 추가 <small>최대 5개</small></button>
+              <p class="field-help">대표 버튼 1개와 보조 버튼 최대 4개가 고객 페이지에 한 번만 표시됩니다.</p>
+            </section>
+
+            <section class="form-section final-step" data-editor-step="5" hidden>
+              <div class="form-title"><span>05</span><div><h3>고객에게 보일 페이지를 확인하세요</h3><p>오른쪽 화면에서 전체 구성을 확인한 뒤 미리보기 또는 발행을 선택하세요.</p></div></div>
+              <div class="final-summary"><strong id="finalBusinessName">내 사업 페이지</strong><p>필요한 내용은 이전 단계로 돌아가 바로 수정할 수 있습니다.</p><button type="button" class="button full" id="mobilePreviewButton">전체 화면 미리보기</button></div>
+            </section>
+            <div class="step-actions"><button type="button" class="button secondary" id="previousEditorStep">이전</button><span id="editorStepStatus">1 / 5</span><button type="button" class="button" id="nextEditorStep">다음 단계</button></div>
+          </form>
+
+          <aside class="preview-panel">
+            <div class="preview-toolbar"><strong>고객 화면 미리보기</strong><small id="saveStatus">자동 저장됨</small></div>
+            <div class="device-frame">
+            <article class="landing-preview" id="landingPreview">
+              <section class="preview-hero">
+                <span id="publicTop"></span><div class="preview-hero-image placeholder" id="previewHeroImage"></div><div class="hero-shade"></div>
+                <div class="preview-hero-content"><span id="previewIndustry">업종을 선택해 주세요</span><h2 id="previewName">상호명을 입력해 주세요</h2><p id="previewTagline">사업의 매력을 한 문장으로 소개해 보세요.</p></div>
+              </section>
+              <section class="quick-connect" id="previewCtaSection" hidden>
+                <div class="quick-connect-heading"><div><p class="preview-kicker">QUICK CONNECT</p><h3>원하는 방법으로 바로 연결하세요</h3></div><span id="actionCountBadge">0개의 연결</span></div>
+                <div class="cta-buttons" id="previewCtas"></div>
+              </section>
+              <section class="preview-section" id="previewAbout"><p class="preview-kicker">ABOUT US</p><h3>우리 사업을 소개합니다</h3><p class="preline" id="previewDescription"></p></section>
+              <section class="preview-gallery" id="previewGallery" hidden></section>
+              <section class="preview-section" id="previewProductsSection"><p class="preview-kicker">PRODUCTS &amp; SERVICES</p><h3>주요 상품 및 서비스</h3><div class="product-cards" id="previewProductCards"></div></section>
+              <section class="preview-section" id="previewStrengthsSection"><p class="preview-kicker">WHY CHOOSE US</p><h3>우리의 특별한 강점</h3><div class="strength-list" id="previewStrengths"></div></section>
+              <section class="preview-section news-section" id="previewNewsSection"><p class="preview-kicker">NEWS</p><div class="title-row"><h3>새로운 소식</h3><button type="button" class="text-button" id="openBoard">소식 더 보기 →</button></div><div class="post-cards" id="previewPostCards"></div></section>
+              <section class="preview-section" id="previewInfoSection"><p class="preview-kicker">INFORMATION</p><h3>이용 안내</h3><div class="info-list" id="previewInfo"></div></section>
+              <footer class="customer-footer">
+                <div class="footer-main">
+                  <div class="footer-identity"><div class="footer-logo" id="previewFooterLogo"><span class="footer-logo-mark">P</span></div><div><strong id="previewFooterName">업체명</strong><p id="previewFooterTagline">내 사업을 필요한 고객에게 연결합니다</p></div></div>
+                  <div class="footer-actions" id="previewFooterActions"></div>
+                </div>
+                <div class="footer-details" id="previewFooterDetails"></div>
+                <div class="footer-legal"><span id="previewBusinessInfo"></span><span><span id="previewCopyright">© 2026 업체명. All rights reserved.</span><small class="made-with">Made with PromoLink</small></span></div>
+              </footer>
+              <div class="mobile-contact" id="mobileContact" hidden></div>
+            </article>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </section>
+
+    <section class="admin-view promotion-view" id="promotionView" hidden>
+      <div class="page-shell">
+        <header class="page-heading"><p class="eyebrow">PROMOLINK PROMOTION HUB</p><h1>사업 정보로 만드는<br><em>채널별 홍보글</em></h1><p>프로모링크로 고객에게 더 쉽게 연결하세요. 한 번 입력하고 채널에 맞는 문구와 사진을 준비할 수 있습니다.</p></header>
+        <ol class="step-nav"><li class="active">1. 홍보 내용 입력</li><li>2. 채널별 결과 확인</li><li>3. 복사·게시·보관</li></ol>
+        <section class="panel">
+          <div class="form-title"><span>01</span><div><h2>무엇을 홍보하시나요?</h2><p>핵심만 적으면 현재 사업 정보를 함께 활용합니다.</p></div></div>
+          <div class="field-grid two">
+            <label class="field"><span>홍보 목적</span><select id="promoPurpose"><option>신상품 알리기</option><option>고객 문의</option><option>매장 방문</option><option>예약</option><option>이벤트</option><option>재방문</option><option>브랜드 소개</option></select></label>
+            <label class="field"><span>흥미 유발 방식</span><select id="promoHook"><option>질문형</option><option>공감형</option><option>혜택형</option><option>비교형</option><option>후기형</option><option>한정형</option><option>이야기형</option></select></label>
+            <label class="field"><span>대상 고객</span><input id="promoAudience" placeholder="예: 특별한 날의 드레스를 찾는 고객"></label>
+          </div>
+          <label class="field"><span>핵심 내용</span><textarea id="promoCore" rows="4" placeholder="꼭 알리고 싶은 내용을 적어주세요."></textarea></label>
+          <div class="field-grid two">
+            <label class="field"><span>상품 또는 서비스</span><input id="promoProduct" placeholder="예: 여름 신상 원피스"></label>
+            <label class="field"><span>강조할 장점</span><input id="promoBenefit" placeholder="예: 체형별 맞춤 추천"></label>
+            <label class="field"><span>행동 유도</span><input id="promoCta" placeholder="예: 지금 매장에 방문해 보세요"></label>
+            <label class="field" hidden><span>사진 선택</span><select id="promoPhoto"><option value="">사진 없음</option></select></label>
+          </div>
+          <section class="promotion-photo-panel" aria-labelledby="promotionPhotoTitle">
+            <div class="title-row"><div><p class="eyebrow">PROMOTION PHOTOS</p><h3 id="promotionPhotoTitle">홍보사진</h3><p>업로드하거나 이미 등록한 사진을 골라 채널별 홍보글에 함께 사용하세요.</p></div><strong id="promotionImageCapacity">0KB 사용</strong></div>
+            <div class="promotion-photo-tools">
+              <label class="upload-field compact-upload"><span>새 이미지 업로드</span><span class="upload-box">＋ <strong>여러 장 선택</strong><small>업로드 즉시 자동 압축</small></span><input type="file" id="promotionImageFiles" accept="image/*" multiple></label>
+              <div class="source-picker"><label class="field"><span>기존 이미지 가져오기</span><select id="promotionImageSource"><option value="">이미지를 선택하세요</option></select></label><button type="button" class="button secondary" id="addPromotionSource">사진 추가</button></div>
+            </div>
+            <p class="status-note" id="promotionImageStatus" role="status">홍보사진은 대표 이미지, 순서, 설명과 함께 임시저장됩니다.</p>
+            <div class="promotion-image-list" id="promotionImageList"></div>
+          </section>
+          <fieldset class="tone-options"><legend>말투 선택</legend><label><input type="radio" name="promoTone" value="친근하게" checked><span>친근하게</span></label><label><input type="radio" name="promoTone" value="전문적으로"><span>전문적으로</span></label><label><input type="radio" name="promoTone" value="감성적으로"><span>감성적으로</span></label><label><input type="radio" name="promoTone" value="간결하게"><span>간결하게</span></label><label><input type="radio" name="promoTone" value="판매 중심"><span>판매 중심</span></label></fieldset>
+          <button type="button" class="button large" id="generatePromo">채널별 홍보글 만들기</button>
+        </section>
+        <section class="results-section">
+          <div class="title-row"><div><p class="eyebrow">CHANNEL CONTENT</p><h2>채널별 결과</h2></div><span id="generationStatus">내용을 입력하고 홍보글을 만들어 보세요.</span></div>
+          <div class="promo-grid" id="promoResults"></div>
+          <div class="result-actions"><button type="button" class="button" id="savePromotion">홍보글 보관함에 저장</button></div>
+        </section>
+        <section class="panel archive-section"><div class="title-row"><div><p class="eyebrow">ARCHIVE</p><h2>홍보글 보관함</h2></div></div><div id="promotionArchive" class="archive-list"></div></section>
+        <section class="panel comments-section">
+          <div class="title-row"><div><p class="eyebrow">COMMENT CENTER</p><h2>댓글센터</h2></div><button type="button" class="button secondary" id="loadDemoComments">데모 댓글 불러오기</button></div>
+          <p class="notice">외부 SNS 댓글 자동 수집은 플랫폼 계정 연결 후 제공될 예정입니다.</p>
+          <div id="commentList" class="comment-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="admin-view posts-view" id="postsView" hidden>
+      <div class="page-shell">
+        <header class="page-heading"><p class="eyebrow">WEBSITE BOARD</p><h1>홈페이지 게시물 관리</h1><p>작성한 게시물은 저장 즉시 고객용 랜딩페이지 소식 영역에 반영됩니다.</p></header>
+        <section class="panel">
+          <div class="title-row"><div><h2>노출 카테고리</h2><p>고객 페이지에 보여줄 카테고리만 선택하세요.</p></div><div class="category-checks" id="categoryVisibility"></div></div>
+        </section>
+        <section class="panel post-editor-panel">
+          <div class="form-title"><span>01</span><div><h2 id="postFormTitle">새 게시물 작성</h2><p>제목과 본문만으로도 저장할 수 있습니다.</p></div></div>
+          <form id="postForm">
+            <input type="hidden" id="postId">
+            <div class="field-grid two">
+              <label class="field"><span>카테고리</span><select id="postCategory"></select></label>
+              <label class="field"><span>작성일</span><input id="postDate" type="date"></label>
+            </div>
+            <label class="field"><span>제목</span><input id="postTitle" required maxlength="100"></label>
+            <label class="field"><span>본문</span><textarea id="postBody" rows="7"></textarea></label>
+            <div class="field-grid two">
+              <label class="upload-field"><span>대표 이미지</span><span class="upload-box">＋ <strong>사진 선택</strong></span><input type="file" id="postHeroFile" accept="image/*"></label>
+              <label class="upload-field"><span>추가 이미지</span><span class="upload-box">＋ <strong>여러 장 선택</strong></span><input type="file" id="postExtraFiles" accept="image/*" multiple></label>
+            </div>
+            <div id="postImagePreview" class="image-list"></div>
+            <div class="field-grid two">
+              <label class="field"><span>버튼명</span><input id="postButtonLabel" placeholder="자세히 보기"></label>
+              <label class="field"><span>연결 링크</span><input id="postButtonUrl" type="url" placeholder="https://"></label>
+            </div>
+            <label class="check"><input id="postPublic" type="checkbox" checked><span>고객 페이지에 공개</span></label>
+            <div class="form-actions"><button class="button" type="submit">게시물 저장</button><button class="button secondary" type="button" id="cancelPostEdit">수정 취소</button><button class="text-button" type="button" id="loadSamplePosts">예시 게시물 불러오기</button></div>
+          </form>
+        </section>
+        <section class="panel"><div class="title-row"><h2>저장된 게시물</h2><span id="postCount"></span></div><div id="postManagerList" class="manager-list"></div></section>
+      </div>
+    </section>
+
+    <div class="modal" id="boardModal" hidden><div class="modal-card wide"><button class="modal-close" data-close-modal="boardModal" aria-label="닫기">×</button><p class="eyebrow">ALL NEWS</p><h2>전체 소식</h2><div class="category-tabs" id="boardTabs"></div><div class="post-cards all-posts" id="boardList"></div></div></div>
+    <div class="modal" id="postDetailModal" hidden><article class="modal-card post-detail"><button class="modal-close" data-close-modal="postDetailModal" aria-label="닫기">×</button><div id="postDetail"></div></article></div>
+    <div class="modal" id="publishModal" hidden><div class="modal-card"><button class="modal-close" data-close-modal="publishModal" aria-label="닫기">×</button><p class="eyebrow">PUBLISH TO WEBSITE</p><h2>홈페이지 게시판에 등록</h2><div class="field-grid two"><label class="field"><span>카테고리</span><select id="publishCategory"></select></label><label class="field"><span>게시일</span><input id="publishDate" type="date"></label></div><label class="field"><span>제목</span><input id="publishTitle"></label><label class="field"><span>대표 이미지</span><select id="publishPhoto"><option value="">사진 없음</option></select></label><label class="check"><input id="publishPublic" type="checkbox" checked><span>공개</span></label><div class="field-grid two"><label class="field"><span>행동 버튼명</span><input id="publishButtonLabel"></label><label class="field"><span>연결 링크</span><input id="publishButtonUrl"></label></div><button type="button" class="button full" id="confirmPublish">게시판에 등록</button></div></div>
+    <div class="modal" id="interviewModal" hidden><div class="modal-card interview-modal-card"><button class="modal-close" data-close-modal="interviewModal" aria-label="닫기">×</button><p class="eyebrow">GUIDED INTERVIEW</p><h2>AI 인터뷰 체험</h2><p class="notice">실제 AI가 아닌 규칙 기반 인터뷰입니다. 다섯 질문의 답을 기존 입력란에 정리해 드립니다.</p><div class="interview-step" id="interviewStep"></div><div class="interview-navigation"><button type="button" class="button secondary" id="interviewPrev">이전</button><span id="interviewCounter">1 / 5</span><button type="button" class="button" id="interviewNext">다음</button></div></div></div>
+    <div class="modal" id="pagePublishModal" hidden><div class="modal-card wide publish-page-modal"><button class="modal-close" data-close-modal="pagePublishModal" aria-label="닫기">×</button><p class="eyebrow">PUBLISH PAGE</p><h2>사업 페이지 발행</h2><div class="publish-layout"><div><div class="field-grid two"><label class="field"><span>페이지 제목</span><input id="pageTitle" maxlength="70"></label><label class="field"><span>핵심 키워드</span><input id="pageKeywords" placeholder="쉼표로 구분"></label></div><label class="field"><span>검색 설명</span><textarea id="pageDescription" rows="3" maxlength="160"></textarea></label><div class="field-grid two"><label class="field"><span>대표 이미지</span><select id="pagePublishImage"><option value="hero">현재 대표 이미지</option><option value="">이미지 없음</option></select></label><label class="field"><span>공개 범위</span><select id="pageVisibility"><option value="public">전체 공개</option><option value="unlisted">링크를 아는 사람만</option><option value="private">비공개</option></select></label></div><label class="field"><span>공개 주소 미리보기</span><input id="pageUrlPreview" readonly></label></div><aside class="publish-checklist"><h3>발행 전 체크리스트</h3><div id="publishChecklist"></div><p id="publishWarning" class="status-note"></p></aside></div><label class="check"><input id="publishDespiteMissing" type="checkbox"><span>누락 항목을 확인했으며 현재 내용으로 발행합니다.</span></label><button type="button" class="button full" id="confirmPagePublish">발행하기</button></div></div>
+    <div class="modal" id="publishCompleteModal" hidden><div class="modal-card publish-complete"><p class="eyebrow">PUBLISHED</p><h2>사업 페이지를 발행했습니다</h2><p id="publishedUrlText" class="published-url"></p><div class="qr-wrap"><img id="publishedQr" alt="공개 페이지 QR 코드"><small>QR 코드는 브라우저에서 안전하게 생성했습니다.</small></div><div class="publish-complete-actions"><a class="button" id="openPublishedPage" target="_blank" rel="noopener">공개 페이지 열기</a><button type="button" class="button secondary" id="copyPublishedLink">링크 복사</button><button type="button" class="button secondary" id="continueEditing">계속 수정</button></div></div></div>
+    <div class="modal" id="settingsModal" hidden><div class="modal-card settings-modal"><button class="modal-close" data-close-modal="settingsModal" aria-label="닫기">×</button><p class="eyebrow">SETTINGS</p><h2>설정</h2><section class="settings-section"><h3>데이터 관리</h3><p>현재 브라우저에 저장된 작업을 백업하거나 복원할 수 있습니다.</p><div class="settings-actions"><button type="button" class="button secondary" id="saveDraft">지금 임시저장</button><button type="button" class="button secondary" id="loadSample">NICE 샘플 불러오기</button><button type="button" class="button secondary" id="exportData">JSON 백업</button><button type="button" class="button secondary" id="importData">JSON 불러오기</button><input type="file" id="importDataFile" accept=".json,application/json" hidden><button type="button" class="text-button danger" id="resetAll">전체 데이터 초기화</button></div><p class="notice">모든 데이터는 현재 브라우저의 localStorage에 저장됩니다. 다른 기기와 자동 동기화되지 않습니다.</p></section></div></div>
+  </main>
+  <nav class="mobile-admin-nav" aria-label="모바일 관리자 메뉴"><a href="#business" data-route="business"><span>⌂</span>사업 페이지</a><a href="#promotion" data-route="promotion"><span>✦</span>홍보 만들기</a><a href="#posts" data-route="posts"><span>▤</span>콘텐츠</a><button type="button" data-open-settings><span>⚙</span>설정</button></nav>
+  <footer class="site-footer"><span>© 2026 프로모링크 · PromoLink</span><span>사업과 고객을 연결하는 통합 홍보 플랫폼</span></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
