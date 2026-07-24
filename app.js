@@ -3,7 +3,7 @@
 
   const STORAGE_KEY = "promoLink.v13";
   const LEGACY_KEYS = ["nicePH.v13", "nicePH.v12", "nicePHState", "nice-ph-data"];
-  const CATEGORIES = ["소식", "신상품", "이벤트", "공지사항", "후기"];
+  const CATEGORIES = ["소식", "신상품", "이벤트", "공지사항", "후기", "프로모션", "이용 안내", "성공 사례", "작성 팁"];
   const INDUSTRIES = {
     "여성의류": "당신에게 어울리는 스타일을 찾아드립니다.",
     "카페": "잠시 머물고 싶은 편안한 공간입니다.",
@@ -18,7 +18,17 @@
     phone:["전화"], sms:["문자"], email:["이메일"], kakao:["카카오톡"], kakaochannel:["카카오채널"],
     navermap:["네이버"], map:["지도"], naverbooking:["네이버예약"], smartstore:["스마트스토어"], instagram:["인스타그램"],
     threads:["Threads"], facebook:["Facebook"], x:["X"], youtube:["YouTube"], blog:["블로그"],
-    showroom:["쇼룸"], ownmall:["자사몰"], coupang:["쿠팡"], link:["기타 링크"]
+    showroom:["쇼룸"], ownmall:["홈페이지"], inquiry:["문의폼"], coupang:["쿠팡"], link:["기타 링크"]
+  };
+  const ACTION_RECOMMENDATIONS = {
+    "음식점":["phone","naverbooking","map","instagram"],
+    "카페":["phone","map","instagram","navermap"],
+    "미용실":["naverbooking","kakao","phone","instagram"],
+    "네일숍":["naverbooking","kakao","phone","instagram"],
+    "여성의류":["kakao","phone","instagram","map"],
+    "헬스·필라테스":["inquiry","phone","kakao","navermap"],
+    "꽃집":["phone","kakao","navermap","map"],
+    "기타":["phone","kakao","ownmall","map"]
   };
   const ICONS = {
     phone:'<path d="M7 3h3l1.3 4-2 1.6a15 15 0 0 0 6.1 6.1l1.6-2 4 1.3v3c0 1.1-.9 2-2 2A16 16 0 0 1 5 5c0-1.1.9-2 2-2Z"/>',
@@ -38,6 +48,7 @@
     blog:'<path d="M5 4h11l3 3v13H5V4Z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
     showroom:'<path d="M4 10 12 3l8 7v10H4V10Z"/><path d="M9 20v-7h6v7M8 9h8"/>',
     ownmall:'<path d="M3 8h18l-2-5H5L3 8Z"/><path d="M5 8v12h14V8M9 20v-6h6v6"/>',
+    inquiry:'<path d="M5 3h14v18H5z"/><path d="M8 7h8M8 11h8M8 15h5"/><circle cx="17" cy="17" r="3"/><path d="M17 15.5v3M15.5 17h3"/>',
     coupang:'<path d="M18 8a7 7 0 1 0 0 8"/><path d="M18 8h3v3M18 16h3v-3"/>',
     link:'<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"/>'
   };
@@ -72,7 +83,7 @@
     const action = (v = {}) => {
       const legacyType = v.type || v.channel || v.icon || "link";
       const type = ACTION_TYPES[legacyType] ? legacyType : "link";
-      return {id:v.id || id("action"),type,label:v.label || ACTION_TYPES[type][0],url:v.url || v.href || "",newWindow:v.newWindow !== false};
+      return {id:v.id || id("action"),type,label:v.label || ACTION_TYPES[type][0],url:v.url || v.href || "",newWindow:v.newWindow !== false,isPrimary:Boolean(v.isPrimary)};
     };
     const post = (v = {}) => ({id:v.id || id("post"),category:CATEGORIES.includes(v.category) ? v.category : "소식",title:v.title || "",body:v.body || "",heroImage:image(v.heroImage || v.image,"contain"),extraImages:(v.extraImages || []).map(x=>image(x,"contain")).filter(Boolean),date:v.date || today(),buttonLabel:v.buttonLabel || "",buttonUrl:v.buttonUrl || "",isPublic:v.isPublic !== false,createdAt:v.createdAt || new Date().toISOString(),updatedAt:v.updatedAt || new Date().toISOString()});
     const promotionImage = (v = {}) => ({id:v.id || id("promo-image"),source:v.source || "upload",src:v.src || "",thumbnail:v.thumbnail || v.src || "",altText:v.altText || "",caption:v.caption || "",order:Number.isFinite(v.order)?v.order:0,isPrimary:Boolean(v.isPrimary),fitMode:["original","cover","contain"].includes(v.fitMode)?v.fitMode:"cover",originalWidth:v.originalWidth || v.width || 0,originalHeight:v.originalHeight || v.height || 0,fileSize:v.fileSize || v.originalBytes || 0,optimizedBytes:v.optimizedBytes || 0});
@@ -96,6 +107,8 @@
       base.products = (raw.products || []).map(product);
       base.strengths = (raw.strengths || []).map(x=>typeof x === "string" ? x : x?.text || "").filter(Boolean);
       base.actionLinks = (raw.actionLinks || raw.actions || []).map(action);
+      if(base.actionLinks.length&&!base.actionLinks.some(x=>x.isPrimary))base.actionLinks[0].isPrimary=true;
+      if(base.actionLinks.filter(x=>x.isPrimary).length>1){let found=false;base.actionLinks.forEach(x=>{if(x.isPrimary&&!found)found=true;else x.isPrimary=false;});}
       base.websitePosts = (raw.websitePosts || []).map(post);
       base.promotionImages = (raw.promotionImages || []).map(promotionImage).sort((a,b)=>a.order-b.order);
       if(base.promotionImages.length&&!base.promotionImages.some(x=>x.isPrimary))base.promotionImages[0].isPrimary=true;
@@ -131,6 +144,7 @@
   let activeDraftId = "";
   let lastPromotionWebsitePostId = "";
   let saveTimer;
+  let editorStep = 1;
 
   const toastElement = $("#toast");
   function toast(message) {
@@ -228,14 +242,25 @@
     $("#strengthFields").innerHTML=state.strengths.map((text,i)=>`<div class="strength-row" data-strength="${i}"><span>${String(i+1).padStart(2,"0")}</span><input value="${escapeHtml(text)}" placeholder="사업의 강점"><button type="button" class="icon-button danger" data-strength-delete>×</button></div>`).join("");
   }
   function renderActions() {
+    if(state.actionLinks.length&&!state.actionLinks.some(a=>a.isPrimary))state.actionLinks[0].isPrimary=true;
     const options=Object.entries(ACTION_TYPES).map(([key,[label]])=>`<option value="${key}">${label}</option>`).join("");
     $("#actionFields").innerHTML=state.actionLinks.map((a,i)=>`
-      <article class="repeat-card" data-action="${i}">
-        <header><strong><span class="brand-icon">${iconSvg(a.type)}</span> 버튼 ${String(i+1).padStart(2,"0")}</strong><button type="button" class="icon-button danger" data-action-delete>×</button></header>
+      <article class="repeat-card action-editor-card ${a.isPrimary?"is-primary":""}" data-action="${i}">
+        <header><strong><span class="brand-icon">${iconSvg(a.type)}</span> ${a.isPrimary?"대표 버튼":"보조 버튼"} ${String(i+1).padStart(2,"0")}</strong><div class="card-tools"><button type="button" class="icon-button" data-action-move="up" title="위로">↑</button><button type="button" class="icon-button" data-action-move="down" title="아래로">↓</button><button type="button" class="icon-button danger" data-action-delete title="삭제">×</button></div></header>
         <div class="action-type-row"><label class="field"><span>버튼 종류</span><select data-action-field="type">${options.replace(`value="${a.type}"`,`value="${a.type}" selected`)}</select></label><label class="field"><span>버튼명</span><input data-action-field="label" value="${escapeHtml(a.label)}"></label></div>
         <label class="field"><span>URL 또는 전화번호</span><input data-action-field="url" value="${escapeHtml(a.url)}" placeholder="https:// 또는 전화번호"></label>
-        <label class="check new-window"><input type="checkbox" data-action-field="newWindow" ${a.newWindow?"checked":""}><span>새 창에서 열기</span></label>
+        <div class="action-card-options"><label class="check"><input type="radio" name="primaryAction" data-action-primary ${a.isPrimary?"checked":""}><span>대표 버튼으로 설정</span></label><label class="check new-window"><input type="checkbox" data-action-field="newWindow" ${a.newWindow?"checked":""}><span>새 창에서 열기</span></label></div>
       </article>`).join("");
+    $("#addAction").disabled=state.actionLinks.length>=5;
+    $("#addAction").querySelector("small").textContent=`${state.actionLinks.length}/5`;
+    renderActionRecommendation();
+  }
+  function recommendedActionTypes(){
+    return ACTION_RECOMMENDATIONS[state.businessProfile.industry] || ACTION_RECOMMENDATIONS["기타"];
+  }
+  function renderActionRecommendation(){
+    const types=recommendedActionTypes(), industry=state.businessProfile.industry;
+    $("#actionRecommendationText").textContent=industry?`${industry} 추천: ${types.map(type=>ACTION_TYPES[type][0]).join(" · ")}`:"업종을 선택하면 고객에게 필요한 버튼을 추천합니다.";
   }
   function renderBusinessImages() {
     const p=state.businessProfile, hero=imageSrc(p.heroImage), logo=imageSrc(p.logoImage);
@@ -285,16 +310,18 @@
     $("#previewGallery").innerHTML=p.subImages.map(x=>`<figure class="fit-${imageFit(x,"contain")}"><img src="${imageSrc(x)}" alt="사업 공간 이미지"></figure>`).join("");
     const info=[["주소",p.address],["영업시간",formatHours()],["전화",p.phone]].filter(x=>x[1]);
     $("#previewInfoSection").hidden=!info.length; $("#previewInfo").innerHTML=info.map(([k,v])=>`<div class="info-row"><strong>${k}</strong><span>${escapeHtml(v)}</span></div>`).join("");
-    const actions=state.actionLinks.filter(x=>x.label&&x.url);
-    $("#previewCtaSection").hidden=!actions.length; $("#previewCtas").innerHTML=actions.map(actionButton).join("");
-    $("#previewFooterActions").innerHTML=actions.slice(0,4).map(actionButton).join("");
-    $("#heroActions").innerHTML=actions.slice(0,2).map(actionButton).join("");
-    $("#mobileContact").hidden=!actions.length; $("#mobileContact").innerHTML=actions[0]?actionButton(actions[0]):"";
+    const actions=state.actionLinks.filter(x=>x.label&&x.url).slice(0,5);
+    const primary=actions.find(x=>x.isPrimary)||actions[0], secondary=actions.filter(x=>x!==primary).slice(0,4);
+    $("#previewCtaSection").hidden=!secondary.length; $("#previewCtas").innerHTML=secondary.map(actionButton).join("");
+    $("#previewFooterActions").innerHTML="";
+    $("#heroActions").innerHTML=primary?actionButton(primary):"";
+    $("#mobileContact").hidden=true; $("#mobileContact").innerHTML="";
     const posts=publicPosts(); $("#previewNewsSection").hidden=!posts.length; $("#previewPostCards").innerHTML=posts.slice(0,3).map(postCard).join("");
     const footerDetails=[["ADDRESS",p.address||p.serviceArea],["PHONE",p.phone],["OPENING HOURS",formatHours()]].filter(x=>x[1]);
     $("#previewFooterDetails").innerHTML=footerDetails.map(([label,value])=>`<div class="footer-detail"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
     $("#previewBusinessInfo").textContent=[p.representativeName&&`대표 ${p.representativeName}`,p.businessNumber&&`사업자등록번호 ${p.businessNumber}`].filter(Boolean).join(" · ");
     $("#previewCopyright").textContent=`© ${new Date().getFullYear()} ${p.businessName||"프로모링크"}. All rights reserved.`;
+    $("#finalBusinessName").textContent=p.businessName?`${p.businessName} 고객 페이지`:"내 사업 페이지";
     renderProgress();
   }
   function renderProgress() {
@@ -313,6 +340,7 @@
       if(t.name==="industry" && (!state.businessProfile.tagline || state.businessProfile.tagline===INDUSTRIES[oldIndustry])) {
         state.businessProfile.tagline=INDUSTRIES[t.value]; $("#businessForm").elements.tagline.value=state.businessProfile.tagline;
       }
+      if(t.name==="industry")renderActionRecommendation();
       scheduleSave(); renderPreview();
     }
     const product=t.closest("[data-product]"); if(product && t.dataset.productField){state.products[+product.dataset.product][t.dataset.productField]=t.value;scheduleSave();renderPreview();}
@@ -336,6 +364,8 @@
     if(t.closest("[data-product-image-remove]")){state.products[+product.dataset.product].image=null;renderProducts();scheduleSave();renderPreview();}
     if(t.closest("[data-strength-delete]")){state.strengths.splice(+strength.dataset.strength,1);renderStrengths();scheduleSave();renderPreview();}
     if(t.closest("[data-action-delete]")){state.actionLinks.splice(+action.dataset.action,1);renderActions();scheduleSave();renderPreview();}
+    if(t.closest("[data-action-primary]")){state.actionLinks.forEach((item,index)=>item.isPrimary=index===+action.dataset.action);renderActions();scheduleSave();renderPreview();}
+    if(t.closest("[data-action-move]")){const i=+action.dataset.action,d=t.closest("[data-action-move]").dataset.actionMove==="up"?-1:1,j=i+d;if(j>=0&&j<state.actionLinks.length){[state.actionLinks[i],state.actionLinks[j]]=[state.actionLinks[j],state.actionLinks[i]];renderActions();scheduleSave();renderPreview();}}
     if(t.closest("[data-sub-delete]")){state.businessProfile.subImages.splice(+t.closest("[data-sub-image]").dataset.subImage,1);renderBusinessImages();scheduleSave();renderPreview();}
     if(t.closest('[data-remove-image="hero"]')){state.businessProfile.heroImage=null;renderBusinessImages();scheduleSave();renderPreview();}
     if(t.closest('[data-remove-image="logo"]')){state.businessProfile.logoImage=null;renderBusinessImages();scheduleSave();renderPreview();}
@@ -356,7 +386,16 @@
   $("#productFields").addEventListener("change",e=>{if(e.target.matches("[data-product-file]")){const card=e.target.closest("[data-product]"),input=e.target;handleImages([...input.files],"cover",r=>{state.products[+card.dataset.product].image=r[0];renderProducts();renderPreview();refreshPromotionSources();scheduleSave();});}});
   $("#addProduct").onclick=()=>{state.products.push(Data.product());renderProducts();scheduleSave();};
   $("#addStrength").onclick=()=>{state.strengths.push("");renderStrengths();scheduleSave();};
-  $("#addAction").onclick=()=>{state.actionLinks.push(Data.action({type:"link"}));renderActions();scheduleSave();};
+  $("#addAction").onclick=()=>{if(state.actionLinks.length>=5){toast("연결 버튼은 대표 1개와 보조 4개까지 추가할 수 있습니다.");return;}state.actionLinks.push(Data.action({type:"link",isPrimary:state.actionLinks.length===0}));renderActions();scheduleSave();};
+  $("#applyActionRecommendation").onclick=()=>{
+    if(state.actionLinks.length&&!confirm("현재 연결 버튼을 업종 추천 조합으로 바꿀까요?"))return;
+    state.actionLinks=recommendedActionTypes().map((type,index)=>Data.action({type,isPrimary:index===0,newWindow:!["phone","sms","email"].includes(type)}));
+    renderActions();renderPreview();scheduleSave();toast("업종에 맞는 연결 버튼 조합을 적용했습니다. 연락처와 URL을 입력해 주세요.");
+  };
+  $("#strengthSuggestions").onclick=event=>{
+    const button=event.target.closest("[data-strength-suggestion]");if(!button)return;
+    if(!state.strengths.includes(button.dataset.strengthSuggestion)){state.strengths.push(button.dataset.strengthSuggestion);renderStrengths();renderPreview();scheduleSave();}
+  };
 
   function sampleData() {
     const next=Data.blank(); Object.assign(next.businessProfile,{industry:"여성의류",businessName:"NICE",tagline:"당신의 품격과 가치 상승의 동반자",description:"동대문에서 20년 이상 여성의류를 판매해온 NICE입니다.\n파티드레스, 무대의상, 홀복부터 미디와 롱드레스까지 고객의 체형과 목적에 맞는 스타일을 함께 찾아드립니다.",address:"서울시 중구 동대문패션타운",phone:"02-1234-5678",openTime:"10:30",closeTime:"01:00",closesNextDay:true,hoursNote:"일요일 휴무"});
@@ -623,11 +662,20 @@
   });
 
   function promoInputs() {
-    return {purpose:$("#promoPurpose").value,audience:$("#promoAudience").value.trim(),core:$("#promoCore").value.trim(),product:$("#promoProduct").value.trim(),benefit:$("#promoBenefit").value.trim(),cta:$("#promoCta").value.trim(),photo:$("#promoPhoto").value,tone:$('input[name="promoTone"]:checked').value};
+    return {purpose:$("#promoPurpose").value,hook:$("#promoHook").value,audience:$("#promoAudience").value.trim(),core:$("#promoCore").value.trim(),product:$("#promoProduct").value.trim(),benefit:$("#promoBenefit").value.trim(),cta:$("#promoCta").value.trim(),photo:$("#promoPhoto").value,tone:$('input[name="promoTone"]:checked').value};
   }
   function makePromo(channel,inputs,variant=0) {
     const b=state.businessProfile,name=b.businessName||"우리 매장",subject=inputs.product||inputs.purpose,core=inputs.core||`${name}의 ${subject} 소식을 전합니다.`,benefit=inputs.benefit||state.strengths[0]||"정성을 담은 서비스",cta=inputs.cta||"궁금한 점은 편하게 문의해 주세요.",audience=inputs.audience?`${inputs.audience}께 `:"";
-    const hooks=[`${subject}, 기다리셨나요?`,`오늘 ${name}에서 전하는 새로운 소식`,`당신의 일상에 특별함을 더할 ${subject}`],hook=hooks[variant%hooks.length];
+    const hookSets={
+      "질문형":[`${subject}, 기다리셨나요?`,`${subject}을 고를 때 무엇이 가장 중요하세요?`],
+      "공감형":[`마음에 드는 선택을 찾는 일이 생각보다 어렵죠.`,`고객님의 고민을 잘 알기에 ${subject} 소식을 준비했습니다.`],
+      "혜택형":[`${benefit}, 지금 확인해 보세요.`,`더 좋은 선택을 위한 ${subject} 소식입니다.`],
+      "비교형":[`비슷해 보여도 경험은 다릅니다.`,`고르기 전에 꼭 비교해 보세요.`],
+      "후기형":[`고객들이 가장 많이 이야기한 이유가 있습니다.`,`직접 경험한 고객의 선택에는 이유가 있습니다.`],
+      "한정형":[`지금만 만날 수 있는 ${subject} 소식`,`놓치기 전에 확인해 주세요.`],
+      "이야기형":[`오늘 ${name}에서 전하는 작은 이야기`,`이 ${subject}을 준비하기까지의 이야기입니다.`]
+    };
+    const hooks=hookSets[inputs.hook]||hookSets["질문형"],hook=hooks[variant%hooks.length];
     if(channel==="instagram")return `${hook}\n\n${audience}${core}\n\n✓ ${benefit}\n${cta}\n\n#${name.replace(/\s/g,"")} #${inputs.purpose.replace(/\s/g,"")} #소상공인 #동네가게`;
     if(channel==="threads")return `${hook}\n${core}\n${benefit}이 가장 큰 장점이에요.\n여러분은 어떤 점이 가장 궁금하신가요?`;
     if(channel==="facebook")return `${name} ${inputs.purpose} 안내\n\n${core}\n\n${benefit}을 바탕으로 정성껏 준비했습니다.\n${formatHours()?`이용 안내: ${formatHours()}\n`:""}${b.address?`위치: ${b.address}\n`:""}${cta}`;
@@ -679,7 +727,7 @@
   function openPublishModal(channel) {
     pendingPublishChannel=channel;const input=promoInputs(),text=promoOutputs[channel]||"";
     $("#publishTitle").value=channel==="website"?text.split("\n")[0]:`${state.businessProfile.businessName||"우리 매장"} ${input.purpose} 안내`;
-    $("#publishCategory").value=input.purpose==="신상품"?"신상품":input.purpose==="이벤트"?"이벤트":input.purpose==="후기"?"후기":input.purpose==="긴급 공지"?"공지사항":"소식";
+    $("#publishCategory").value=input.purpose.includes("신상품")?"신상품":input.purpose==="이벤트"?"이벤트":input.purpose==="브랜드 소개"?"소식":input.purpose==="예약"||input.purpose==="매장 방문"?"이용 안내":"프로모션";
     const primary=state.promotionImages.find(image=>image.isPrimary);$("#publishPhoto").value=primary?`promotion:${primary.id}`:input.photo||"";$("#publishDate").value=today();$("#publishPublic").checked=true;$("#publishModal").hidden=false;
   }
   $("#confirmPublish").onclick=()=>{
@@ -700,7 +748,7 @@
   }
   $("#promotionArchive").addEventListener("click",async e=>{
     const key=["open","copy","duplicate","delete"].find(x=>e.target.matches(`[data-draft-${x}]`));if(!key)return;const draft=state.promotionDrafts.find(d=>d.id===e.target.dataset[`draft${key[0].toUpperCase()+key.slice(1)}`]);if(!draft)return;
-    if(key==="open"){const v=draft.inputs;activeDraftId=draft.id;lastPromotionWebsitePostId=draft.websitePostId||"";$("#promoPurpose").value=v.purpose;$("#promoAudience").value=v.audience||"";$("#promoCore").value=v.core||"";$("#promoProduct").value=v.product||"";$("#promoBenefit").value=v.benefit||"";$("#promoCta").value=v.cta||"";state.promotionImages=clone(draft.images||[]);promoOutputs=clone(draft.channels);renderPromotionImages();renderPromoResults();scheduleSave();scrollTo({top:$("#promoResults").getBoundingClientRect().top+scrollY-100,behavior:"smooth"});}
+    if(key==="open"){const v=draft.inputs;activeDraftId=draft.id;lastPromotionWebsitePostId=draft.websitePostId||"";$("#promoPurpose").value=v.purpose;$("#promoHook").value=v.hook||"질문형";$("#promoAudience").value=v.audience||"";$("#promoCore").value=v.core||"";$("#promoProduct").value=v.product||"";$("#promoBenefit").value=v.benefit||"";$("#promoCta").value=v.cta||"";state.promotionImages=clone(draft.images||[]);promoOutputs=clone(draft.channels);renderPromotionImages();renderPromoResults();scheduleSave();scrollTo({top:$("#promoResults").getBoundingClientRect().top+scrollY-100,behavior:"smooth"});}
     if(key==="copy"){const text=Object.entries(draft.channels).map(([c,t])=>`[${CHANNELS[c]?.name||c}]\n${t}`).join("\n\n");toast(await copyText(text)?"채널별 문구를 모두 복사했습니다.":"복사에 실패했습니다.");}
     if(key==="duplicate"){state.promotionDrafts.unshift(Data.draft({...clone(draft),id:"",title:`${draft.title} 복사본`,date:new Date().toISOString()}));scheduleSave();renderArchive();}
     if(key==="delete"&&confirm("이 홍보글을 보관함에서 삭제할까요?")){state.promotionDrafts=state.promotionDrafts.filter(x=>x.id!==draft.id);scheduleSave();renderArchive();}
@@ -711,6 +759,25 @@
   }
   $("#loadDemoComments").onclick=()=>{state.comments=[Data.comment({channel:"Instagram",author:"민지",content:"피팅 예약은 어떻게 하나요?",aiDraft:"안녕하세요, 관심 가져주셔서 감사합니다! 전화 또는 상담 버튼으로 원하시는 날짜를 알려주시면 피팅 가능 시간을 안내해 드릴게요."}),Data.comment({channel:"Threads",author:"dresslover",content:"택배 상담도 가능한가요?",aiDraft:"네, 택배 상담도 가능합니다. 원하시는 스타일과 사이즈를 알려주시면 자세히 도와드리겠습니다."})];scheduleSave();renderComments();toast("데모 댓글을 불러왔습니다.");};
   $("#commentList").addEventListener("click",async e=>{const copy=e.target.closest("[data-comment-copy]"),status=e.target.closest("[data-comment-status]");if(copy){const c=state.comments.find(x=>x.id===copy.dataset.commentCopy);toast(await copyText(c.aiDraft)?"추천 답변을 복사했습니다.":"복사에 실패했습니다.");}if(status){const c=state.comments.find(x=>x.id===status.dataset.commentStatus);c.answered=!c.answered;scheduleSave();renderComments();}});
+
+  function showEditorStep(step,scroll=true){
+    editorStep=Math.max(1,Math.min(5,step));
+    $$("[data-editor-step]").forEach(section=>section.hidden=Number(section.dataset.editorStep)!==editorStep);
+    $$("[data-step-target]").forEach(button=>{const active=Number(button.dataset.stepTarget)===editorStep;button.classList.toggle("active",active);button.setAttribute("aria-current",active?"step":"false");});
+    $("#previousEditorStep").disabled=editorStep===1;
+    $("#nextEditorStep").textContent=editorStep===5?"미리보기 보기":"다음 단계";
+    $("#editorStepStatus").textContent=`${editorStep} / 5`;
+    document.body.classList.toggle("editor-preview-step",editorStep===5);
+    if(scroll&&innerWidth<701)$("#builder").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  $("#editorStepper").onclick=event=>{const button=event.target.closest("[data-step-target]");if(button)showEditorStep(Number(button.dataset.stepTarget));};
+  $("#previousEditorStep").onclick=()=>showEditorStep(editorStep-1);
+  $("#nextEditorStep").onclick=()=>editorStep===5?location.hash="preview":showEditorStep(editorStep+1);
+  $("#mobilePreviewButton").onclick=()=>location.hash="preview";
+  const settingsModal=$("#settingsModal");
+  function openSettings(){settingsModal.hidden=false;}
+  $("#openSettings").onclick=openSettings;
+  $$("[data-open-settings]").forEach(button=>button.onclick=openSettings);
 
   function applyRoute() {
     const requested=(location.hash||"#business").slice(1),route=requested==="builder"?"business":requested,preview=route==="preview",published=route==="published";
@@ -726,5 +793,5 @@
     else if(route==="business")setTimeout(()=>{if(location.hash==="#business")window.scrollTo(0,0)},0);
   }
   window.addEventListener("hashchange",applyRoute);
-  initializeStaticOptions();renderPromoResults();renderAll();applyRoute();
+  initializeStaticOptions();renderPromoResults();renderAll();showEditorStep(1,false);applyRoute();
 })();
