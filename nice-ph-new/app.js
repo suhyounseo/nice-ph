@@ -53,19 +53,26 @@
     link:'<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1-1"/>'
   };
   const iconSvg = (type) => `<svg class="svg-icon" viewBox="0 0 24 24" aria-hidden="true">${ICONS[type] || ICONS.link}</svg>`;
-  const BRAND_MARKS = {
-    kakao:"TALK",kakaochannel:"CH",navermap:"N",naverbooking:"N",smartstore:"N",blog:"B",
-    instagram:"IG",threads:"@",facebook:"f",x:"X",youtube:"▶",coupang:"C",showroom:"S",ownmall:"W"
+  const brandIcon = (type) => {
+    const icons = {
+      kakao:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#FEE500"/><path d="M18 8.2c-6.1 0-11 3.8-11 8.5 0 3 2 5.6 5 7.1l-1 4.2 4.9-2.7c.7.1 1.4.2 2.1.2 6.1 0 11-3.8 11-8.6 0-4.7-4.9-8.5-11-8.5Z" fill="#191919"/></svg>`,
+      kakaochannel:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#FEE500"/><path d="M18 8.2c-6.1 0-11 3.8-11 8.5 0 3 2 5.6 5 7.1l-1 4.2 4.9-2.7c.7.1 1.4.2 2.1.2 6.1 0 11-3.8 11-8.6 0-4.7-4.9-8.5-11-8.5Z" fill="#191919"/><path d="M18 12v9M13.5 16.5h9" stroke="#FEE500" stroke-width="2" stroke-linecap="round"/></svg>`,
+      instagram:`<svg viewBox="0 0 36 36" aria-hidden="true"><defs><radialGradient id="igG" cx="30%" cy="105%" r="120%"><stop offset="0" stop-color="#FFD600"/><stop offset=".35" stop-color="#FF7A00"/><stop offset=".62" stop-color="#FF0169"/><stop offset=".82" stop-color="#D300C5"/><stop offset="1" stop-color="#7638FA"/></radialGradient></defs><rect width="36" height="36" rx="11" fill="url(#igG)"/><rect x="9" y="9" width="18" height="18" rx="6" fill="none" stroke="#fff" stroke-width="2.2"/><circle cx="18" cy="18" r="4.4" fill="none" stroke="#fff" stroke-width="2.2"/><circle cx="24.2" cy="11.8" r="1.4" fill="#fff"/></svg>`,
+      youtube:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#FF0033"/><path d="M27.7 13.1c-.3-1.2-1.3-2.2-2.5-2.5-2.2-.6-12.2-.6-14.4 0-1.2.3-2.2 1.3-2.5 2.5-.6 2.2-.6 7.6 0 9.8.3 1.2 1.3 2.2 2.5 2.5 2.2.6 12.2.6 14.4 0 1.2-.3 2.2-1.3 2.5-2.5.6-2.2.6-7.6 0-9.8Z" fill="#fff"/><path d="m16 14.5 6 3.5-6 3.5v-7Z" fill="#FF0033"/></svg>`,
+      smartstore:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#03C75A"/><path d="M11 10h14l-1.1 16H12.1L11 10Z" fill="#fff"/><path d="M14.5 11V9.3a3.5 3.5 0 0 1 7 0V11" fill="none" stroke="#03C75A" stroke-width="2"/><path d="M15 22v-8l7 8v-8" fill="none" stroke="#03C75A" stroke-width="2.2" stroke-linejoin="round"/></svg>`,
+      navermap:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#03C75A"/><path d="M10 26V10l7.5 10.3V10H26v16h-7.5L11 15.7V26h-1Z" fill="#fff"/></svg>`,
+      naverbooking:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#03C75A"/><rect x="9" y="10" width="18" height="17" rx="3" fill="#fff"/><path d="M13 8v5M23 8v5M9 15h18" stroke="#03C75A" stroke-width="2"/><path d="m14 21 2.5 2.5L22 18" fill="none" stroke="#03C75A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      blog:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#03C75A"/><path d="M10 9h12l4 4v14H10V9Z" fill="#fff"/><path d="M22 9v5h5" fill="#D7F5E3"/><path d="M14 16h8M14 20h8M14 24h5" stroke="#03C75A" stroke-width="2" stroke-linecap="round"/></svg>`,
+      showroom:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#E94186"/><path d="M8 16 18 8l10 8v12H8V16Z" fill="#fff"/><path d="M14 28v-8h8v8" fill="#FAD6E5"/><circle cx="18" cy="15" r="2.2" fill="#E94186"/></svg>`,
+      ownmall:`<svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="11" fill="#4A4039"/><path d="M8 14h20l-2-6H10l-2 6Z" fill="#fff"/><path d="M10 14v13h16V14M15 27v-8h6v8" fill="none" stroke="#fff" stroke-width="2"/></svg>`
+    };
+    return icons[type] || `<span class="generic-action-icon">${iconSvg(type)}</span>`;
   };
   const ACTION_HINTS = {
-    phone:"전화로 바로 문의",sms:"문자로 문의",email:"이메일 보내기",kakao:"카카오톡 상담",kakaochannel:"채널에서 상담",
-    navermap:"네이버에서 확인",naverbooking:"예약 화면 열기",smartstore:"상품 보러가기",instagram:"새 소식 보기",threads:"이야기 보기",
-    facebook:"페이지 방문",x:"계정 방문",youtube:"영상 보기",blog:"블로그 방문",showroom:"온라인 쇼룸 보기",ownmall:"홈페이지 방문",
-    inquiry:"문의서 작성",map:"위치와 길찾기",coupang:"상품 보러가기",link:"자세히 보기"
-  };
-  const brandIcon = (type) => {
-    const mark=BRAND_MARKS[type];
-    return mark?`<span aria-hidden="true">${mark}</span>`:iconSvg(type);
+    phone:"전화로 바로 문의",sms:"문자로 간편 문의",email:"이메일 보내기",kakao:"카카오톡으로 상담",kakaochannel:"채널에서 상담",
+    navermap:"네이버 정보 보기",map:"매장 위치 확인",naverbooking:"예약 화면 열기",smartstore:"상품 보러가기",instagram:"새 소식과 상품 보기",
+    threads:"이야기 보기",facebook:"페이지 방문",x:"계정 방문",youtube:"영상 보기",blog:"블로그 방문",showroom:"온라인 쇼룸 보기",ownmall:"홈페이지 방문",
+    inquiry:"문의서 작성",coupang:"상품 보러가기",link:"자세히 보기"
   };
   const CHANNELS = {
     instagram:{name:"Instagram",url:"https://www.instagram.com/"},
